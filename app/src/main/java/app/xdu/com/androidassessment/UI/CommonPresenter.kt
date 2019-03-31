@@ -8,9 +8,7 @@ import app.xdu.com.androidassessment.ViewData.RVAdapter
 
 
 class CommonPresenter(internal var context: Context, internal var adapter: RecyclerView.Adapter<*>) {
-    internal var presenterHelper: PresenterHelper = PresenterHelper()
-
-
+    private var presenterHelper: PresenterHelper = PresenterHelper()
     fun retrieveUserData() {
         var httpRequest = HttpRequest(adapter, this)
         httpRequest.execute(GlobalData.URL_1)

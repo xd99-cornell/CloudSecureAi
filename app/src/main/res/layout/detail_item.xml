@@ -20,7 +20,7 @@
                 android:layout_height="320dp"
                 android:id="@+id/video"
                 android:layout_alignParentLeft="true"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:contentDescription="video"
                 android:src="@mipmap/ic_launcher"
                 android:layout_alignParentTop="true"

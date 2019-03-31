@@ -17,13 +17,12 @@ public class UserDetailsActivity extends AppCompatActivity {
     private RecyclerView rv;
     private RecyclerView.Adapter adapter;
     private CommonPresenter presenter;
+    private Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_details);
-        Intent intent = getIntent();
-        intent.getIntExtra("id", 1);
-
+        intent = getIntent();
         mToolbar =  findViewById(R.id.main_toolbar);
         adapter = new RVAdapter2();
         setSupportActionBar(mToolbar);
@@ -41,7 +40,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.refreshOrGoBack) {
-            finish();
+            presenter.retrieveVideoDetails(intent.getIntExtra("id", 1));
             return true;
         }
         return super.onOptionsItemSelected(item);
