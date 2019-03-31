@@ -19,7 +19,7 @@
     <dimen name="material_margin_right">4dp</dimen>
 
 
-    <dimen name="image_width"> 320dp</dimen>
+    <dimen name="image_height"> 320dp</dimen>
 
 
 
