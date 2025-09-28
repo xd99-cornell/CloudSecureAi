@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="nav-brand">
+        <img src="assets/logo.svg" alt="CouldSecureAI Logo" class="logo">
+        <span class="brand-name">CouldSecureAI</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-outline" (click)="showLogin()">Login</button>
+        <button class="btn btn-primary" (click)="showSignup()">Get Started</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Secure Your Cloud Infrastructure with 
+          <span class="gradient-text">AI-Powered Intelligence</span>
+        </h1>
+        <p class="hero-description">
+          CouldSecureAI provides comprehensive hybrid cloud management and advanced security protection 
+          powered by artificial intelligence. Protect your resources, optimize performance, and ensure 
+          compliance across all your cloud environments.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-large" (click)="startTrial()">Start Free Trial</button>
+          <button class="btn btn-outline btn-large" (click)="watchDemo()">Watch Demo</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="cloud-illustration">
+          <div class="cloud cloud-1"></div>
+          <div class="cloud cloud-2"></div>
+          <div class="cloud cloud-3"></div>
+          <div class="shield-icon">🛡️</div>
+          <div class="ai-icon">🤖</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Powerful Features for Modern Cloud Security</h2>
+      
+      <div class="features-grid">
+        <!-- Feature 1: Hybrid Cloud Management -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <div class="icon-cloud">☁️</div>
+          </div>
+          <h3 class="feature-title">Hybrid Cloud Management with AI</h3>
+          <p class="feature-description">
+            Intelligently manage and orchestrate your hybrid cloud infrastructure across multiple 
+            providers. Our AI algorithms optimize resource allocation, predict scaling needs, 
+            and automate deployment processes for maximum efficiency.
+          </p>
+          <ul class="feature-list">
+            <li>✅ Multi-cloud orchestration</li>
+            <li>✅ AI-driven resource optimization</li>
+            <li>✅ Automated scaling and deployment</li>
+            <li>✅ Cost optimization insights</li>
+          </ul>
+        </div>
+
+        <!-- Feature 2: Cloud Resource Security -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <div class="icon-security">🔒</div>
+          </div>
+          <h3 class="feature-title">Cloud Resource Security Protection</h3>
+          <p class="feature-description">
+            Advanced security monitoring and threat detection powered by machine learning. 
+            Protect your cloud resources from vulnerabilities, unauthorized access, 
+            and emerging cyber threats with real-time intelligence.
+          </p>
+          <ul class="feature-list">
+            <li>✅ Real-time threat detection</li>
+            <li>✅ Vulnerability assessment</li>
+            <li>✅ Compliance monitoring</li>
+            <li>✅ Automated incident response</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Ready to Secure Your Cloud?</h2>
+        <p class="cta-description">
+          Join thousands of organizations that trust CouldSecureAI to protect their cloud infrastructure.
+        </p>
+        <button class="btn btn-primary btn-large" (click)="showLogin()">Get Started Today</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login Modal -->
+  <div class="modal" [class.active]="showLoginModal" (click)="closeModal($event)">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Login to CouldSecureAI</h3>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <form class="login-form" (ngSubmit)="onLogin()">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            [(ngModel)]="loginData.email" 
+            name="email"
+            placeholder="Enter your email"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            [(ngModel)]="loginData.password"
+            name="password" 
+            placeholder="Enter your password"
+            required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-full">Login</button>
+          <p class="form-link">
+            Don't have an account? <a href="#" (click)="showSignupModal = true; showLoginModal = false">Sign up</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal" [class.active]="showSignupModal" (click)="closeModal($event)">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Sign Up for CouldSecureAI</h3>
+        <button class="close-btn" (click)="closeModal()">&times;</button>
+      </div>
+      <form class="signup-form" (ngSubmit)="onSignup()">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input 
+            type="text" 
+            id="fullName" 
+            [(ngModel)]="signupData.fullName"
+            name="fullName"
+            placeholder="Enter your full name"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="signupEmail">Email</label>
+          <input 
+            type="email" 
+            id="signupEmail" 
+            [(ngModel)]="signupData.email"
+            name="signupEmail"
+            placeholder="Enter your email"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">Password</label>
+          <input 
+            type="password" 
+            id="signupPassword" 
+            [(ngModel)]="signupData.password"
+            name="signupPassword"
+            placeholder="Create a password"
+            required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
+          <p class="form-link">
+            Already have an account? <a href="#" (click)="showLoginModal = true; showSignupModal = false">Login</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <router-outlet></router-outlet>
+</body>
+</html>

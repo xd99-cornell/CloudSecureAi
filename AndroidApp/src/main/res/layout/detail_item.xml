@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="16dp"
+    >
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cv2"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/image_height"
+                android:id="@+id/video"
+                android:layout_alignParentLeft="true"
+                android:scaleType="fitXY"
+                android:contentDescription="video"
+                android:src="@mipmap/ic_launcher"
+                android:layout_alignParentTop="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/video_name"
+                android:layout_below="@+id/video"
+                android:textSize="@dimen/material_text_title"
+                android:layout_marginRight="@dimen/material_margin_left"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Video Title"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/video_name"
+                android:id="@+id/duration_text"
+                android:textSize="@dimen/material_text_body1"
+                android:layout_marginTop="@dimen/material_margin_top"
+                android:text="Duration: "
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/video_name"
+                android:layout_toRightOf="@+id/duration_text"
+                android:id="@+id/duration"
+                android:textSize="@dimen/material_text_body1"
+                android:layout_marginTop="@dimen/material_margin_top"
+                android:text="00:00"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
