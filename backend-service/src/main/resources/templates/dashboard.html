@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudSecure AI - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">CloudSecure AI</a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-3" id="userInfo">
+                    Welcome, <span id="username"></span>!
+                </span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>🎉 Welcome to Your Protected Dashboard!</h2>
+                <p class="lead">You have successfully authenticated and can now access protected content.</p>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">👤 User Profile</h5>
+                        <p class="card-text">View and manage your profile information.</p>
+                        <button class="btn btn-primary" onclick="loadUserProfile()">View Profile</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">🔒 Protected API</h5>
+                        <p class="card-text">Test access to protected API endpoints.</p>
+                        <button class="btn btn-success" onclick="testProtectedAPI()">Test API</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3" th:if="${user != null and user.role.name() == 'ADMIN'}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">⚙️ Admin Panel</h5>
+                        <p class="card-text">Access administrative functions.</p>
+                        <a href="/admin" class="btn btn-warning">Admin Panel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>API Response</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre id="apiResponse" class="bg-light p-3 rounded">Click on buttons above to see API responses...</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Check if user is authenticated
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        if (!token) {
+            window.location.href = '/login';
+        } else {
+            document.getElementById('username').textContent = user.username || 'User';
+        }
+        
+        // Helper function to make authenticated API calls
+        async function makeAuthenticatedRequest(url) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.status === 401) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    window.location.href = '/login';
+                    return;
+                }
+                
+                const data = await response.json();
+                return { response, data };
+            } catch (error) {
+                return { error: error.message };
+            }
+        }
+        
+        async function loadUserProfile() {
+            const result = await makeAuthenticatedRequest('/api/api/user/profile');
+            
+            if (result.error) {
+                document.getElementById('apiResponse').textContent = `Error: ${result.error}`;
+            } else {
+                document.getElementById('apiResponse').textContent = JSON.stringify(result.data, null, 2);
+            }
+        }
+        
+        async function testProtectedAPI() {
+            const result = await makeAuthenticatedRequest('/api/api/user/test');
+            
+            if (result.error) {
+                document.getElementById('apiResponse').textContent = `Error: ${result.error}`;
+            } else {
+                document.getElementById('apiResponse').textContent = JSON.stringify(result.data, null, 2);
+            }
+        }
+        
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
