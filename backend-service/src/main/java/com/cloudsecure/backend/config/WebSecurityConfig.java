@@ -62,12 +62,6 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(auth -> 
                 auth.requestMatchers(new AntPathRequestMatcher("/auth/**")).permitAll()
                     .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/register")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
-                    .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
                     .anyRequest().authenticated()
             );
         
@@ -83,7 +77,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // Angular dev server
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

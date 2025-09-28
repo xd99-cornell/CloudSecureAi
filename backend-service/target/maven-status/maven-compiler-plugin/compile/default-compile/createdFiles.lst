@@ -12,6 +12,5 @@ com/cloudsecure/backend/security/JwtUtils.class
 com/cloudsecure/backend/service/UserDetailsServiceImpl.class
 com/cloudsecure/backend/dto/LoginRequest.class
 com/cloudsecure/backend/dto/AuthResponse.class
-com/cloudsecure/backend/controller/WebController.class
 com/cloudsecure/backend/entity/User.class
 com/cloudsecure/backend/controller/UserController$UserProfileResponse.class

@@ -4,7 +4,6 @@
 /Users/xinpid/Documents/xdu_personal/CouldSecureAI/backend-service/src/main/java/com/cloudsecure/backend/dto/AuthResponse.java
 /Users/xinpid/Documents/xdu_personal/CouldSecureAI/backend-service/src/main/java/com/cloudsecure/backend/controller/AuthController.java
 /Users/xinpid/Documents/xdu_personal/CouldSecureAI/backend-service/src/main/java/com/cloudsecure/backend/security/AuthTokenFilter.java
-/Users/xinpid/Documents/xdu_personal/CouldSecureAI/backend-service/src/main/java/com/cloudsecure/backend/controller/WebController.java
 /Users/xinpid/Documents/xdu_personal/CouldSecureAI/backend-service/src/main/java/com/cloudsecure/backend/controller/UserController.java
 /Users/xinpid/Documents/xdu_personal/CouldSecureAI/backend-service/src/main/java/com/cloudsecure/backend/config/DataInitializer.java
 /Users/xinpid/Documents/xdu_personal/CouldSecureAI/backend-service/src/main/java/com/cloudsecure/backend/dto/RegisterRequest.java

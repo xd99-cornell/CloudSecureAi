@@ -13,8 +13,10 @@
         <span class="brand-name">CouldSecureAI</span>
       </div>
       <div class="nav-actions">
-        <button class="btn btn-outline" (click)="showLogin()">Login</button>
-        <button class="btn btn-primary" (click)="showSignup()">Get Started</button>
+        <button class="btn btn-outline" (click)="showLogin()" *ngIf="!isAuthenticated">Login</button>
+        <button class="btn btn-primary" (click)="showSignup()" *ngIf="!isAuthenticated">Get Started</button>
+        <button class="btn btn-success" routerLink="/dashboard" *ngIf="isAuthenticated">Dashboard</button>
+        <button class="btn btn-outline" (click)="logout()" *ngIf="isAuthenticated">Logout</button>
       </div>
     </nav>
   </header>
@@ -116,15 +118,16 @@
         <h3>Login to CouldSecureAI</h3>
         <button class="close-btn" (click)="closeModal()">&times;</button>
       </div>
+      <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
       <form class="login-form" (ngSubmit)="onLogin()">
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="username">Username</label>
           <input 
-            type="email" 
-            id="email" 
-            [(ngModel)]="loginData.email" 
-            name="email"
-            placeholder="Enter your email"
+            type="text" 
+            id="username" 
+            [(ngModel)]="loginData.username" 
+            name="username"
+            placeholder="Enter your username"
             required>
         </div>
         <div class="form-group">
@@ -154,6 +157,7 @@
         <h3>Sign Up for CouldSecureAI</h3>
         <button class="close-btn" (click)="closeModal()">&times;</button>
       </div>
+      <div class="alert alert-danger" *ngIf="errorMessage">{{ errorMessage }}</div>
       <form class="signup-form" (ngSubmit)="onSignup()">
         <div class="form-group">
           <label for="fullName">Full Name</label>
@@ -163,6 +167,16 @@
             [(ngModel)]="signupData.fullName"
             name="fullName"
             placeholder="Enter your full name"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="signupUsername">Username</label>
+          <input 
+            type="text" 
+            id="signupUsername" 
+            [(ngModel)]="signupData.username"
+            name="signupUsername"
+            placeholder="Choose a username"
             required>
         </div>
         <div class="form-group">

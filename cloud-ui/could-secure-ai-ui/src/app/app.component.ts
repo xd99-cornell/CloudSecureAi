@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
+import { LoginRequest, RegisterRequest } from './models/auth.model';
 
 interface LoginData {
-  email: string;
+  username: string;
   password: string;
 }
 
 interface SignupData {
   fullName: string;
+  username: string;
   email: string;
   password: string;
 }
@@ -16,21 +20,39 @@ interface SignupData {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'could-secure-ai-ui';
   showLoginModal = false;
   showSignupModal = false;
+  isAuthenticated = false;
+  errorMessage = '';
   
   loginData: LoginData = {
-    email: '',
+    username: '',
     password: ''
   };
   
   signupData: SignupData = {
     fullName: '',
+    username: '',
     email: '',
     password: ''
   };
+
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    // Check if user is already authenticated
+    this.isAuthenticated = this.authService.isAuthenticated();
+    
+    // Subscribe to authentication changes
+    this.authService.currentUser.subscribe(user => {
+      this.isAuthenticated = !!user;
+    });
+  }
 
   showLogin() {
     this.showLoginModal = true;
@@ -45,24 +67,65 @@ export class AppComponent {
   closeModal(event?: Event) {
     this.showLoginModal = false;
     this.showSignupModal = false;
+    this.errorMessage = '';
   }
 
   onLogin() {
-    console.log('Login attempt:', this.loginData);
-    // Here you would typically call an authentication service
-    alert(`Welcome back, ${this.loginData.email}!`);
-    this.closeModal();
-    // Reset form
-    this.loginData = { email: '', password: '' };
+    this.errorMessage = '';
+    
+    const loginRequest: LoginRequest = {
+      username: this.loginData.username,
+      password: this.loginData.password
+    };
+
+    this.authService.login(loginRequest).subscribe({
+      next: (response) => {
+        if (response.token) {
+          this.closeModal();
+          this.router.navigate(['/dashboard']);
+          // Reset form
+          this.loginData = { username: '', password: '' };
+        } else {
+          this.errorMessage = response.message || 'Login failed';
+        }
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Login failed. Please try again.';
+      }
+    });
   }
 
   onSignup() {
-    console.log('Signup attempt:', this.signupData);
-    // Here you would typically call a registration service
-    alert(`Welcome to CouldSecureAI, ${this.signupData.fullName}!`);
-    this.closeModal();
-    // Reset form
-    this.signupData = { fullName: '', email: '', password: '' };
+    this.errorMessage = '';
+    
+    // Split full name into first and last name
+    const nameParts = this.signupData.fullName.trim().split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
+
+    const registerRequest: RegisterRequest = {
+      username: this.signupData.username,
+      email: this.signupData.email,
+      password: this.signupData.password,
+      firstName: firstName,
+      lastName: lastName
+    };
+
+    this.authService.register(registerRequest).subscribe({
+      next: (response) => {
+        if (response.token) {
+          this.closeModal();
+          this.router.navigate(['/dashboard']);
+          // Reset form
+          this.signupData = { fullName: '', username: '', email: '', password: '' };
+        } else {
+          this.errorMessage = response.message || 'Registration failed';
+        }
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
+      }
+    });
   }
 
   startTrial() {
@@ -71,5 +134,10 @@ export class AppComponent {
 
   watchDemo() {
     alert('Demo video coming soon!');
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/home']);
   }
 }
