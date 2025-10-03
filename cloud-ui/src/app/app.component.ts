@@ -25,7 +25,9 @@ export class AppComponent implements OnInit {
   showLoginModal = false;
   showSignupModal = false;
   isAuthenticated = false;
+  isCollapsed = false;
   errorMessage = '';
+  currentUser: any = null;
   
   loginData: LoginData = {
     username: '',
@@ -51,7 +53,13 @@ export class AppComponent implements OnInit {
     // Subscribe to authentication changes
     this.authService.currentUser.subscribe(user => {
       this.isAuthenticated = !!user;
+      this.currentUser = user;
     });
+
+    // Get current user if authenticated
+    if (this.isAuthenticated) {
+      this.currentUser = this.authService.currentUserValue;
+    }
   }
 
   showLogin() {
@@ -138,6 +146,25 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
+  }
+
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
+  }
+
+  goDashboard() {
+    if (this.isAuthenticated) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
+  }
+
+  showAbout() {
+    // Show about modal or navigate to about page
+    alert('About CouldSecureAI - Enterprise Cloud Security Platform');
   }
 }

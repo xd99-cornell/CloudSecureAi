@@ -14,6 +14,72 @@ export class DashboardComponent implements OnInit {
   apiResponse: string = '';
   private apiUrl = 'http://localhost:8080/api';
 
+  // Dashboard metrics
+  totalAccounts = 12;
+  securityScore = 85;
+  totalScans = 247;
+  criticalAlerts = 3;
+  highRiskResources = 15;
+  mediumRiskResources = 42;
+  compliantResources = 183;
+  complianceScore = 78;
+
+  // Recent activities data
+  recentActivities = [
+    {
+      title: 'AWS Account Security Scan',
+      time: '2 hours ago',
+      result: 'Completed',
+      status: 'success'
+    },
+    {
+      title: 'Azure Compliance Check',
+      time: '4 hours ago',
+      result: 'Warning',
+      status: 'warning'
+    },
+    {
+      title: 'GCP Resource Assessment',
+      time: '6 hours ago',
+      result: 'Completed',
+      status: 'success'
+    },
+    {
+      title: 'K8s Vulnerability Scan',
+      time: '8 hours ago',
+      result: 'Failed',
+      status: 'critical'
+    }
+  ];
+
+  // Cloud providers data
+  cloudProviders = [
+    {
+      name: 'Amazon Web Services',
+      icon: '🟡',
+      accounts: 5,
+      status: 'connected'
+    },
+    {
+      name: 'Microsoft Azure',
+      icon: '🔵',
+      accounts: 3,
+      status: 'connected'
+    },
+    {
+      name: 'Google Cloud Platform',
+      icon: '🔴',
+      accounts: 2,
+      status: 'connected'
+    },
+    {
+      name: 'Alibaba Cloud',
+      icon: '🟠',
+      accounts: 2,
+      status: 'disconnected'
+    }
+  ];
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -24,7 +90,7 @@ export class DashboardComponent implements OnInit {
     this.currentUser = this.authService.currentUserValue;
     
     if (!this.authService.isAuthenticated()) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/']);
       return;
     }
 
@@ -37,10 +103,19 @@ export class DashboardComponent implements OnInit {
         console.error('Error loading profile:', error);
         if (error.status === 401) {
           this.authService.logout();
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
         }
       }
     });
+
+    // Load dashboard data
+    this.loadDashboardData();
+  }
+
+  loadDashboardData(): void {
+    // In a real application, this would make API calls to fetch dashboard data
+    // For now, we'll use mock data
+    console.log('Loading dashboard data...');
   }
 
   get isAdmin(): boolean {

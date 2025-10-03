@@ -15,6 +15,40 @@ public class UserController {
     @Autowired
     private AuthService authService;
     
+    @PutMapping("/profile")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> updateUserProfile(@RequestBody UserProfileUpdateRequest updateRequest) {
+        User currentUser = authService.getCurrentUser();
+        if (currentUser != null) {
+            // Update user information
+            if (updateRequest.getFirstName() != null) {
+                currentUser.setFirstName(updateRequest.getFirstName());
+            }
+            if (updateRequest.getLastName() != null) {
+                currentUser.setLastName(updateRequest.getLastName());
+            }
+            if (updateRequest.getEmail() != null) {
+                currentUser.setEmail(updateRequest.getEmail());
+            }
+            
+            // Save updated user
+            User updatedUser = authService.updateUser(currentUser);
+            
+            // Return updated profile
+            UserProfileResponse response = new UserProfileResponse(
+                updatedUser.getId(),
+                updatedUser.getUsername(),
+                updatedUser.getEmail(),
+                updatedUser.getFirstName(),
+                updatedUser.getLastName(),
+                updatedUser.getRole().name(),
+                updatedUser.getCreatedAt()
+            );
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.badRequest().body("User not found");
+    }
+    
     @GetMapping("/profile")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getUserProfile() {
@@ -45,6 +79,24 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> adminAccess() {
         return ResponseEntity.ok("Admin Board.");
+    }
+    
+    // Inner class for user profile update request
+    public static class UserProfileUpdateRequest {
+        private String firstName;
+        private String lastName;
+        private String email;
+        
+        public UserProfileUpdateRequest() {}
+        
+        public String getFirstName() { return firstName; }
+        public void setFirstName(String firstName) { this.firstName = firstName; }
+        
+        public String getLastName() { return lastName; }
+        public void setLastName(String lastName) { this.lastName = lastName; }
+        
+        public String getEmail() { return email; }
+        public void setEmail(String email) { this.email = email; }
     }
     
     // Inner class for user profile response

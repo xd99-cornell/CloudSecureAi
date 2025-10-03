@@ -1,64 +1,203 @@
 <div class="dashboard-container">
-  <!-- Navigation Header -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-      <a class="navbar-brand" routerLink="/home">CloudSecure AI</a>
-      <div class="navbar-nav ms-auto">
-        <span class="navbar-text me-3" *ngIf="currentUser">
-          Welcome, {{ currentUser.username }}!
-        </span>
-        <button class="btn btn-outline-light btn-sm me-2" *ngIf="isAdmin" (click)="goToAdmin()">Admin Panel</button>
-        <button class="btn btn-outline-light btn-sm" (click)="logout()">Logout</button>
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <h1 class="page-title">Security Dashboard</h1>
+    <p class="page-subtitle">Monitor your cloud infrastructure security status and compliance metrics</p>
+  </div>
+
+  <!-- Key Metrics Row -->
+  <div class="metrics-row">
+    <div class="metric-card">
+      <div class="metric-icon cloud-icon">☁️</div>
+      <div class="metric-content">
+        <div class="metric-value">{{ totalAccounts || 12 }}</div>
+        <div class="metric-label">Cloud Accounts</div>
       </div>
     </div>
-  </nav>
-
-  <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-12">
-        <h2>🎉 Welcome to Your Protected Dashboard!</h2>
-        <p class="lead">You have successfully authenticated and can now access protected content.</p>
+    
+    <div class="metric-card">
+      <div class="metric-icon security-icon">🛡️</div>
+      <div class="metric-content">
+        <div class="metric-value">{{ securityScore || 85 }}%</div>
+        <div class="metric-label">Security Score</div>
       </div>
     </div>
+    
+    <div class="metric-card">
+      <div class="metric-icon scan-icon">🔍</div>
+      <div class="metric-content">
+        <div class="metric-value">{{ totalScans || 247 }}</div>
+        <div class="metric-label">Total Scans</div>
+      </div>
+    </div>
+    
+    <div class="metric-card">
+      <div class="metric-icon alert-icon">⚠️</div>
+      <div class="metric-content">
+        <div class="metric-value">{{ criticalAlerts || 3 }}</div>
+        <div class="metric-label">Critical Alerts</div>
+      </div>
+    </div>
+  </div>
 
-    <div class="row mt-4">
-      <div class="col-md-4 mb-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">👤 User Profile</h5>
-            <p class="card-text">View and manage your profile information.</p>
-            <button class="btn btn-primary" (click)="loadUserProfile()">View Profile</button>
+  <!-- Main Content Grid -->
+  <div class="dashboard-grid">
+    <!-- Security Overview -->
+    <div class="dashboard-card large">
+      <div class="card-header">
+        <h3 class="card-title">Security Overview</h3>
+        <div class="card-actions">
+          <button class="btn-secondary">View Details</button>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="security-overview">
+          <div class="security-item">
+            <span class="security-label">High Risk Resources</span>
+            <span class="security-value critical">{{ highRiskResources || 15 }}</span>
+          </div>
+          <div class="security-item">
+            <span class="security-label">Medium Risk Resources</span>
+            <span class="security-value warning">{{ mediumRiskResources || 42 }}</span>
+          </div>
+          <div class="security-item">
+            <span class="security-label">Compliant Resources</span>
+            <span class="security-value success">{{ compliantResources || 183 }}</span>
           </div>
         </div>
       </div>
-      <div class="col-md-4 mb-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">🔒 Protected API</h5>
-            <p class="card-text">Test access to protected API endpoints.</p>
-            <button class="btn btn-success" (click)="testProtectedAPI()">Test API</button>
-          </div>
-        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3 class="card-title">Recent Scan Activity</h3>
       </div>
-      <div class="col-md-4 mb-3" *ngIf="isAdmin">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">⚙️ Admin Panel</h5>
-            <p class="card-text">Access administrative functions.</p>
-            <button class="btn btn-warning" (click)="goToAdmin()">Admin Panel</button>
+      <div class="card-content">
+        <div class="activity-list">
+          <div class="activity-item" *ngFor="let activity of recentActivities">
+            <div class="activity-icon">🔍</div>
+            <div class="activity-content">
+              <div class="activity-title">{{ activity.title }}</div>
+              <div class="activity-time">{{ activity.time }}</div>
+            </div>
+            <div class="activity-status" [class]="activity.status">
+              {{ activity.result }}
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row mt-4">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h5>API Response</h5>
+    <!-- Cloud Providers -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3 class="card-title">Cloud Providers</h3>
+        <div class="card-actions">
+          <button class="btn-primary" routerLink="/cloud-accounts">Manage</button>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="provider-list">
+          <div class="provider-item" *ngFor="let provider of cloudProviders">
+            <div class="provider-icon">{{ provider.icon }}</div>
+            <div class="provider-content">
+              <div class="provider-name">{{ provider.name }}</div>
+              <div class="provider-accounts">{{ provider.accounts }} accounts</div>
+            </div>
+            <div class="provider-status" [class]="provider.status">
+              {{ provider.status }}
+            </div>
           </div>
-          <div class="card-body">
-            <pre class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">{{ apiResponse || 'Click on buttons above to see API responses...' }}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compliance Status -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3 class="card-title">Compliance Status</h3>
+        <div class="card-actions">
+          <button class="btn-secondary" routerLink="/compliance">View Rules</button>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="compliance-overview">
+          <div class="compliance-circle">
+            <div class="circle-content">
+              <div class="circle-percentage">{{ complianceScore || 78 }}%</div>
+              <div class="circle-label">Compliant</div>
+            </div>
+          </div>
+          <div class="compliance-details">
+            <div class="compliance-item">
+              <span class="compliance-framework">CIS Controls</span>
+              <span class="compliance-score">85%</span>
+            </div>
+            <div class="compliance-item">
+              <span class="compliance-framework">SOC 2</span>
+              <span class="compliance-score">72%</span>
+            </div>
+            <div class="compliance-item">
+              <span class="compliance-framework">ISO 27001</span>
+              <span class="compliance-score">68%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3 class="card-title">Quick Actions</h3>
+      </div>
+      <div class="card-content">
+        <div class="quick-actions">
+          <button class="action-btn" routerLink="/vulnerabilities">
+            <div class="action-icon">🔍</div>
+            <div class="action-text">Run Security Scan</div>
+          </button>
+          <button class="action-btn" routerLink="/cloud-accounts">
+            <div class="action-icon">➕</div>
+            <div class="action-text">Add Cloud Account</div>
+          </button>
+          <button class="action-btn" routerLink="/reports">
+            <div class="action-icon">📊</div>
+            <div class="action-text">Generate Report</div>
+          </button>
+          <button class="action-btn" routerLink="/settings">
+            <div class="action-icon">⚙️</div>
+            <div class="action-text">Configure Rules</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Trends -->
+    <div class="dashboard-card large">
+      <div class="card-header">
+        <h3 class="card-title">Security Trends (Last 30 Days)</h3>
+        <div class="card-actions">
+          <select class="filter-select">
+            <option value="30">Last 30 Days</option>
+            <option value="7">Last 7 Days</option>
+            <option value="90">Last 90 Days</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="trends-placeholder">
+          <div class="chart-placeholder">
+            📈 Security trends chart would be displayed here
+            <br><br>
+            <small>Integration with charting library (Chart.js, D3.js, etc.) would show:</small>
+            <ul>
+              <li>Security score over time</li>
+              <li>Vulnerability detection trends</li>
+              <li>Compliance score progression</li>
+              <li>Resource scan frequency</li>
+            </ul>
           </div>
         </div>
       </div>

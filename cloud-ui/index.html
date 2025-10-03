@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>CouldSecureAI</title>
+  <title>CouldSecureAI - Enterprise Cloud Security Platform</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="src/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
+    /* Professional HummerRisk-inspired Theme */
     * {
       margin: 0;
       padding: 0;
@@ -13,111 +14,635 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       line-height: 1.6;
       color: #333;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #f8f9fa;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
+    /* Main Container Layout */
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    /* Header */
-    .header {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 1rem 0;
-      position: fixed;
-      width: 100%;
-      top: 0;
+    /* Header Styles */
+    .el-header {
+      height: 50px;
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
     }
 
-    .navbar {
+    .header-content {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 16px;
+      color: white;
+    }
+
+    .nav-toggle {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 18px;
+    }
+
+    .nav-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      margin-left: 16px;
+      cursor: pointer;
+      flex: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .logo-section:hover {
+      opacity: 0.8;
+    }
+
+    .logo {
+      height: 32px;
+      width: 32px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      margin-right: 12px;
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: white;
+      letter-spacing: 0.5px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .user-dropdown {
+      position: relative;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    .user-dropdown:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .user-dropdown .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      border-radius: 6px;
+      z-index: 1000;
+      margin-top: 8px;
+    }
+
+    .user-dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .user-dropdown .dropdown-content a {
+      color: #2c3e50;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+
+    .user-dropdown .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .username {
+      color: white;
+      font-weight: 500;
+    }
+
+    /* Profile Page Styles */
+    .profile-info-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .profile-avatar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .avatar-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .profile-details h2 {
+      margin: 0 0 8px 0;
+      color: #2c3e50;
+      font-size: 24px;
+    }
+
+    .profile-details p {
+      margin: 0 0 12px 0;
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background-color: #3498db;
+      color: white;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .role-badge.ADMIN {
+      background-color: #e74c3c;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .form-group input[readonly] {
+      background-color: #f8f9fa;
+      color: #6c757d;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #7f8c8d;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Main Layout */
+    .main-layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Sidebar Styles */
+    .el-aside {
+      width: 240px;
+      background: #f8f9fa;
+      border-right: 1px solid #e9ecef;
+      transition: width 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    .el-aside.collapsed {
+      width: 60px;
+    }
+
+    .sidebar-nav {
+      padding: 16px 0;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      color: #495057;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background-color: #e9ecef;
+      color: #2c3e50;
+    }
+
+    .nav-item.active {
+      background-color: #3498db;
+      color: white;
+      border-left-color: #2980b9;
+    }
+
+    .nav-icon {
+      font-size: 16px;
+      margin-right: 12px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .nav-text {
+      white-space: nowrap;
+      overflow: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    .el-aside.collapsed .nav-text {
+      opacity: 0;
+      width: 0;
+    }
+
+    .nav-group-title {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      font-weight: 600;
+      color: #6c757d;
+      background-color: #f1f3f4;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 8px 0;
+    }
+
+    .nav-sub-items .nav-item {
+      padding-left: 36px;
+      font-size: 14px;
+    }
+
+    /* Main Content Area */
+    .el-main {
+      flex: 1;
+      background: #ffffff;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    .content-wrapper {
+      padding: 24px;
+      min-height: calc(100vh - 50px);
+    }
+
+    /* Dashboard Styles */
+    .dashboard-header {
+      background: white;
+      padding: 32px;
+      border-bottom: 1px solid #e9ecef;
+      margin-bottom: 24px;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin: 0 0 8px 0;
+    }
+
+    .page-subtitle {
+      color: #6c757d;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    /* Metrics Row */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+      padding: 0 24px;
+    }
+
+    .metric-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .metric-icon {
+      font-size: 2.5rem;
+      margin-right: 16px;
+      opacity: 0.8;
+    }
+
+    .metric-content {
+      flex: 1;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2c3e50;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .metric-label {
+      color: #6c757d;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+      padding: 0 24px 24px;
+    }
+
+    .dashboard-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .dashboard-card.large {
+      grid-column: span 2;
+    }
+
+    .card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e9ecef;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .nav-brand {
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin: 0;
+    }
+
+    .card-content {
+      padding: 24px;
+    }
+
+    .security-overview {
       display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .security-item {
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      padding: 12px 16px;
+      background: #f8f9fa;
+      border-radius: 8px;
     }
 
-    .logo {
-      width: 40px;
-      height: 40px;
-    }
-
-    .brand-name {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #667eea;
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    .security-label {
       font-weight: 500;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
+      color: #495057;
     }
 
-    .btn-outline {
-      background: transparent;
-      color: #667eea;
-      border: 2px solid #667eea;
+    .security-value {
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.9rem;
     }
 
-    .btn-outline:hover {
-      background: #667eea;
+    .security-value.critical {
+      background: #dc3545;
       color: white;
     }
 
+    .security-value.warning {
+      background: #ffc107;
+      color: #212529;
+    }
+
+    .security-value.success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .btn-primary {
-      background: #667eea;
+      background: #3498db;
       color: white;
     }
 
     .btn-primary:hover {
-      background: #5a6fd8;
+      background: #2980b9;
+      transform: translateY(-1px);
     }
 
-    .btn-large {
-      padding: 15px 30px;
-      font-size: 1.1rem;
-    }
-
-    /* Hero Section */
-    .hero {
-      margin-top: 80px;
-      padding: 100px 0;
+    .btn-secondary {
+      background: #6c757d;
       color: white;
-      text-align: center;
     }
 
-    .hero-content {
-      max-width: 800px;
+    .btn-secondary:hover {
+      background: #5a6268;
+      transform: translateY(-1px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .dashboard-card.large {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .metrics-row {
+        grid-template-columns: 1fr;
+        padding: 0 16px;
+      }
+      
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        padding: 0 16px 16px;
+      }
+      
+      .el-aside {
+        width: 60px;
+      }
+      
+      .el-aside .nav-text {
+        display: none;
+      }
+    }
+
+    /* Landing Page for Non-Authenticated Users */
+    .landing-page {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .landing-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 16px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .landing-navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-brand:hover {
+      opacity: 0.8;
+    }
+
+    .nav-brand .brand-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: #2c3e50;
+    }
+
+    .hero {
+      padding: 120px 0 80px;
+      text-align: center;
+      color: white;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
 
     .hero-title {
       font-size: 3.5rem;
-      margin-bottom: 1.5rem;
       font-weight: 700;
+      margin-bottom: 24px;
+      line-height: 1.2;
     }
 
     .gradient-text {
@@ -129,8 +654,9 @@
 
     .hero-description {
       font-size: 1.3rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 40px;
       opacity: 0.9;
+      line-height: 1.6;
     }
 
     .hero-actions {
@@ -140,440 +666,1339 @@
       flex-wrap: wrap;
     }
 
-    .hero-image {
-      margin-top: 50px;
+    .btn-large {
+      padding: 16px 32px;
+      font-size: 18px;
     }
 
-    .cloud-illustration {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 200px;
+    .btn-outline {
+      background: transparent;
+      color: #3498db;
+      border: 2px solid #3498db;
     }
 
-    .cloud, .shield-icon, .ai-icon {
-      position: absolute;
-      font-size: 3rem;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .cloud-1 { top: 20px; left: 100px; animation-delay: 0s; }
-    .cloud-2 { top: 50px; right: 100px; animation-delay: 1s; }
-    .cloud-3 { bottom: 20px; left: 50%; transform: translateX(-50%); animation-delay: 2s; }
-    .shield-icon { top: 50%; left: 45%; animation-delay: 0.5s; }
-    .ai-icon { top: 50%; right: 45%; animation-delay: 1.5s; }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
+    .btn-outline:hover {
+      background: #3498db;
+      color: white;
+      transform: translateY(-2px);
     }
 
     /* Features Section */
     .features {
-      background: white;
-      padding: 100px 0;
+      padding: 80px 0;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
     }
 
     .section-title {
       text-align: center;
       font-size: 2.5rem;
-      margin-bottom: 3rem;
-      color: #333;
+      font-weight: 700;
+      margin-bottom: 60px;
+      color: white;
     }
 
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-      gap: 3rem;
-      margin-top: 3rem;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .feature-card {
-      padding: 2.5rem;
-      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
     }
 
     .feature-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     }
 
     .feature-icon {
       font-size: 3rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 20px;
+      display: block;
     }
 
     .feature-title {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: #333;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #2c3e50;
     }
 
     .feature-description {
-      font-size: 1.1rem;
-      margin-bottom: 1.5rem;
       color: #666;
+      line-height: 1.6;
+      font-size: 1rem;
     }
 
-    .feature-list {
-      list-style: none;
-    }
-
-    .feature-list li {
-      padding: 5px 0;
-      color: #555;
-    }
-
-    /* CTA Section */
-    .cta {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 100px 0;
-      text-align: center;
-      color: white;
-    }
-
-    .cta-title {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .cta-description {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      opacity: 0.9;
-    }
-
-    /* Modal */
-    .modal {
+    /* Authentication Modal */
+    .auth-modal {
       display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 2000;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 3000;
       align-items: center;
       justify-content: center;
     }
 
-    .modal.active {
+    .auth-modal.active {
       display: flex;
     }
 
-    .modal-content {
+    .auth-modal-content {
       background: white;
-      border-radius: 10px;
-      padding: 2rem;
-      max-width: 400px;
+      border-radius: 16px;
+      padding: 0;
       width: 90%;
+      max-width: 450px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
     }
 
-    .modal-header {
+    .auth-tabs {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #e9ecef;
     }
 
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
+    .auth-tab {
+      flex: 1;
+      padding: 20px;
+      text-align: center;
       cursor: pointer;
+      font-weight: 600;
+      color: #6c757d;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+    }
+
+    .auth-tab.active {
+      color: #3498db;
+      background: white;
+      border-bottom: 2px solid #3498db;
+    }
+
+    .auth-tab:first-child {
+      border-radius: 16px 0 0 0;
+    }
+
+    .auth-tab:last-child {
+      border-radius: 0 16px 0 0;
+    }
+
+    .auth-form {
+      padding: 30px;
     }
 
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 20px;
     }
 
     .form-group label {
       display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #495057;
     }
 
     .form-group input {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 1rem;
+      padding: 12px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #6c757d;
+      z-index: 1;
+    }
+
+    .close-btn:hover {
+      color: #495057;
     }
 
     .btn-full {
       width: 100%;
+      margin-top: 10px;
     }
 
-    .form-link {
+    .auth-footer {
       text-align: center;
-      margin-top: 1rem;
-    }
-
-    .form-link a {
-      color: #667eea;
-      text-decoration: none;
-    }
-
-    .alert {
-      padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 1rem;
-    }
-
-    .alert-danger {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
-
-    @media (max-width: 768px) {
-      .hero-title { font-size: 2.5rem; }
-      .features-grid { grid-template-columns: 1fr; }
-      .hero-actions { flex-direction: column; align-items: center; }
+      margin-top: 20px;
+      color: #6c757d;
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <header class="header">
-    <nav class="navbar">
-      <div class="container">
-        <div class="nav-brand">
-          <div class="logo">🛡️</div>
+  <!-- Landing Page (Default View) -->
+  <div class="landing-page" id="landing-page">
+    <!-- Landing Header -->
+    <header class="landing-header">
+      <div class="landing-navbar">
+        <div class="nav-brand" onclick="goToHome()" style="cursor: pointer;">
+          <div class="logo">CS</div>
           <span class="brand-name">CouldSecureAI</span>
         </div>
         <div class="nav-actions">
-          <button class="btn btn-outline" onclick="showLogin()">Login</button>
-          <button class="btn btn-primary" onclick="showSignup()">Get Started</button>
+          <button class="btn btn-primary" onclick="showAuthModal()">Get Started</button>
         </div>
       </div>
-    </nav>
-  </header>
+    </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <h1 class="hero-title">
-          Secure Your Cloud Infrastructure with 
-          <span class="gradient-text">AI-Powered Intelligence</span>
-        </h1>
-        <p class="hero-description">
-          CouldSecureAI provides comprehensive hybrid cloud management and advanced security protection 
-          powered by artificial intelligence. Protect your resources, optimize performance, and ensure 
-          compliance across all your cloud environments.
-        </p>
-        <div class="hero-actions">
-          <button class="btn btn-primary btn-large" onclick="startTrial()">Start Free Trial</button>
-          <button class="btn btn-outline btn-large" onclick="watchDemo()">Watch Demo</button>
-        </div>
-      </div>
-      <div class="hero-image">
-        <div class="cloud-illustration">
-          <div class="cloud cloud-1">☁️</div>
-          <div class="cloud cloud-2">☁️</div>
-          <div class="cloud cloud-3">☁️</div>
-          <div class="shield-icon">🛡️</div>
-          <div class="ai-icon">🤖</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features Section -->
-  <section class="features">
-    <div class="container">
-      <h2 class="section-title">Powerful Features for Modern Cloud Security</h2>
-      
-      <div class="features-grid">
-        <!-- Feature 1: Hybrid Cloud Management -->
-        <div class="feature-card">
-          <div class="feature-icon">
-            <div class="icon-cloud">☁️</div>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            Enterprise Cloud Security Platform
+            <span class="gradient-text">Powered by AI</span>
+          </h1>
+          <p class="hero-description">
+            CouldSecureAI provides comprehensive hybrid cloud management and advanced security protection 
+            powered by artificial intelligence. Protect your resources, optimize performance, and ensure 
+            compliance across all your cloud environments.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-large" onclick="showAuthModal()">Get Started</button>
+            <button class="btn btn-outline btn-large" onclick="watchDemo()">Watch Demo</button>
           </div>
-          <h3 class="feature-title">Hybrid Cloud Management with AI</h3>
-          <p class="feature-description">
-            Intelligently manage and orchestrate your hybrid cloud infrastructure across multiple 
-            providers. Our AI algorithms optimize resource allocation, predict scaling needs, 
-            and automate deployment processes for maximum efficiency.
-          </p>
-          <ul class="feature-list">
-            <li>✅ Multi-cloud orchestration</li>
-            <li>✅ AI-driven resource optimization</li>
-            <li>✅ Automated scaling and deployment</li>
-            <li>✅ Cost optimization insights</li>
-          </ul>
         </div>
+      </div>
+    </section>
 
-        <!-- Feature 2: Cloud Resource Security -->
-        <div class="feature-card">
-          <div class="feature-icon">
-            <div class="icon-security">🔒</div>
+    <!-- Features Section -->
+    <section class="features">
+      <div class="container">
+        <h2 class="section-title">Key Features</h2>
+        <div class="features-grid">
+          <!-- Feature 1 -->
+          <div class="feature-card">
+            <div class="feature-icon">☁️</div>
+            <h3 class="feature-title">Multi-Cloud Management</h3>
+            <p class="feature-description">
+              Centrally manage and monitor security across AWS, Azure, GCP, and other cloud providers 
+              from a single unified dashboard.
+            </p>
           </div>
-          <h3 class="feature-title">Cloud Resource Security Protection</h3>
-          <p class="feature-description">
-            Advanced security monitoring and threat detection powered by machine learning. 
-            Protect your cloud resources from vulnerabilities, unauthorized access, 
-            and emerging cyber threats with real-time intelligence.
-          </p>
-          <ul class="feature-list">
-            <li>✅ Real-time threat detection</li>
-            <li>✅ Vulnerability assessment</li>
-            <li>✅ Compliance monitoring</li>
-            <li>✅ Automated incident response</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- CTA Section -->
-  <section class="cta">
-    <div class="container">
-      <div class="cta-content">
-        <h2 class="cta-title">Ready to Secure Your Cloud?</h2>
-        <p class="cta-description">
-          Join thousands of organizations that trust CouldSecureAI to protect their cloud infrastructure.
-        </p>
-        <button class="btn btn-primary btn-large" onclick="showLogin()">Get Started Today</button>
-      </div>
-    </div>
-  </section>
+          <!-- Feature 2 -->
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3 class="feature-title">AI-Powered Security</h3>
+            <p class="feature-description">
+              Advanced machine learning algorithms detect threats, predict vulnerabilities, 
+              and automate security responses in real-time.
+            </p>
+          </div>
 
-  <!-- Login Modal -->
-  <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Login to CouldSecureAI</h3>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
+          <!-- Feature 3 -->
+          <div class="feature-card">
+            <div class="feature-icon">✅</div>
+            <h3 class="feature-title">Compliance Automation</h3>
+            <p class="feature-description">
+              Automated compliance monitoring for SOC 2, ISO 27001, CIS Controls, and other 
+              industry standards with detailed reporting.
+            </p>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3 class="feature-title">Vulnerability Assessment</h3>
+            <p class="feature-description">
+              Continuous scanning and assessment of cloud resources, containers, and code 
+              repositories for security vulnerabilities.
+            </p>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3 class="feature-title">Advanced Analytics</h3>
+            <p class="feature-description">
+              Comprehensive security dashboards with real-time metrics, trend analysis, 
+              and customizable reporting for stakeholders.
+            </p>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="feature-card">
+            <div class="feature-icon">⚙️</div>
+            <h3 class="feature-title">DevSecOps Integration</h3>
+            <p class="feature-description">
+              Seamless integration with CI/CD pipelines, Kubernetes clusters, and 
+              development workflows for shift-left security.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="alert alert-danger" id="errorMessage" style="display: none;"></div>
-      <form class="login-form" onsubmit="handleLogin(event)">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" name="username" placeholder="Enter your username" required>
+    </section>
+  </div>
+
+  <!-- Main Application Layout (Hidden by default) -->
+  <div class="main-container" id="authenticated-app" style="display: none;">
+    <!-- Header -->
+    <header class="el-header">
+      <div class="header-content">
+        <div class="nav-toggle" onclick="toggleSidebar()">
+          <span id="toggle-icon">≡</span>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <div class="logo-section" onclick="goToHome()">
+          <div class="logo">CS</div>
+          <span class="brand-name">CouldSecureAI</span>
         </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary btn-full">Login</button>
-          <p class="form-link">
-            Don't have an account? <a href="#" onclick="showSignup(); return false;">Sign up</a>
-          </p>
+        <div class="header-actions">
+          <div class="user-dropdown">
+            <span class="username" id="current-username">admin@cloudsecure.com</span>
+            <div class="dropdown-content">
+              <a href="#" onclick="showPage('profile')">👤 Profile</a>
+              <a href="#" onclick="goToHome()">🚪 Logout</a>
+            </div>
+          </div>
+          <div class="notifications">
+            🔔
+          </div>
         </div>
-      </form>
+      </div>
+    </header>
+
+    <div class="main-layout">
+      <!-- Sidebar Navigation -->
+      <aside class="el-aside" id="sidebar">
+        <nav class="sidebar-nav">
+          <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
+            <div class="nav-icon">📊</div>
+            <span class="nav-text">Dashboard</span>
+          </div>
+          
+          <div class="nav-group-title">
+            <div class="nav-icon">☁️</div>
+            <span class="nav-text">Cloud Security</span>
+          </div>
+          
+          <div class="nav-item" data-page="cloud-accounts" onclick="showPage('cloud-accounts')">
+            <div class="nav-icon">🏢</div>
+            <span class="nav-text">Cloud Accounts</span>
+          </div>
+          <div class="nav-item" data-page="resources" onclick="showPage('resources')">
+            <div class="nav-icon">📋</div>
+            <span class="nav-text">Resource Situation</span>
+          </div>
+          <div class="nav-item" data-page="compliance" onclick="showPage('compliance')">
+            <div class="nav-icon">✅</div>
+            <span class="nav-text">Compliance Rules</span>
+          </div>
+          <div class="nav-item" data-page="vulnerabilities" onclick="showPage('vulnerabilities')">
+            <div class="nav-icon">🛡️</div>
+            <span class="nav-text">Vulnerability Scan</span>
+          </div>
+
+          <div class="nav-group-title">
+            <div class="nav-icon">⚙️</div>
+            <span class="nav-text">Cloud Native</span>
+          </div>
+          
+          <div class="nav-item" data-page="k8s-clusters" onclick="showPage('k8s-clusters')">
+            <div class="nav-icon">🔗</div>
+            <span class="nav-text">K8s Clusters</span>
+          </div>
+          <div class="nav-item" data-page="container-images" onclick="showPage('container-images')">
+            <div class="nav-icon">📦</div>
+            <span class="nav-text">Container Images</span>
+          </div>
+          <div class="nav-item" data-page="code-security" onclick="showPage('code-security')">
+            <div class="nav-icon">💻</div>
+            <span class="nav-text">Code Security</span>
+          </div>
+
+          <div class="nav-item" data-page="reports" onclick="showPage('reports')">
+            <div class="nav-icon">📈</div>
+            <span class="nav-text">Security Reports</span>
+          </div>
+
+          <div class="nav-item" data-page="settings" onclick="showPage('settings')">
+            <div class="nav-icon">⚙️</div>
+            <span class="nav-text">System Settings</span>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="el-main">
+        <div class="content-wrapper">
+          <!-- Dashboard Content -->
+          <div id="dashboard-content">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+              <h1 class="page-title">Security Dashboard</h1>
+              <p class="page-subtitle">Monitor your cloud infrastructure security status and compliance metrics</p>
+            </div>
+
+            <!-- Key Metrics Row -->
+            <div class="metrics-row">
+              <div class="metric-card">
+                <div class="metric-icon">☁️</div>
+                <div class="metric-content">
+                  <div class="metric-value">12</div>
+                  <div class="metric-label">Cloud Accounts</div>
+                </div>
+              </div>
+              
+              <div class="metric-card">
+                <div class="metric-icon">🛡️</div>
+                <div class="metric-content">
+                  <div class="metric-value">85%</div>
+                  <div class="metric-label">Security Score</div>
+                </div>
+              </div>
+              
+              <div class="metric-card">
+                <div class="metric-icon">🔍</div>
+                <div class="metric-content">
+                  <div class="metric-value">247</div>
+                  <div class="metric-label">Total Scans</div>
+                </div>
+              </div>
+              
+              <div class="metric-card">
+                <div class="metric-icon">⚠️</div>
+                <div class="metric-content">
+                  <div class="metric-value">3</div>
+                  <div class="metric-label">Critical Alerts</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="dashboard-grid">
+              <!-- Security Overview -->
+              <div class="dashboard-card large">
+                <div class="card-header">
+                  <h3 class="card-title">Security Overview</h3>
+                  <div class="card-actions">
+                    <button class="btn btn-secondary">View Details</button>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="security-overview">
+                    <div class="security-item">
+                      <span class="security-label">High Risk Resources</span>
+                      <span class="security-value critical">15</span>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">Medium Risk Resources</span>
+                      <span class="security-value warning">42</span>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">Compliant Resources</span>
+                      <span class="security-value success">183</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Recent Activity -->
+              <div class="dashboard-card">
+                <div class="card-header">
+                  <h3 class="card-title">Recent Scan Activity</h3>
+                </div>
+                <div class="card-content">
+                  <div class="security-overview">
+                    <div class="security-item">
+                      <span class="security-label">AWS Account Security Scan</span>
+                      <span class="security-value success">Completed</span>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">Azure Compliance Check</span>
+                      <span class="security-value warning">Warning</span>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">GCP Resource Assessment</span>
+                      <span class="security-value success">Completed</span>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">K8s Vulnerability Scan</span>
+                      <span class="security-value critical">Failed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cloud Providers -->
+              <div class="dashboard-card">
+                <div class="card-header">
+                  <h3 class="card-title">Cloud Providers</h3>
+                  <div class="card-actions">
+                    <button class="btn btn-primary">Manage</button>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <div class="security-overview">
+                    <div class="security-item">
+                      <span class="security-label">🟡 Amazon Web Services</span>
+                      <span class="security-value success">5 accounts</span>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">🔵 Microsoft Azure</span>
+                      <span class="security-value success">3 accounts</span>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">🔴 Google Cloud Platform</span>
+                      <span class="security-value success">2 accounts</span>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">🟠 Alibaba Cloud</span>
+                      <span class="security-value critical">Disconnected</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick Actions -->
+              <div class="dashboard-card">
+                <div class="card-header">
+                  <h3 class="card-title">Quick Actions</h3>
+                </div>
+                <div class="card-content">
+                  <div class="security-overview">
+                    <div class="security-item">
+                      <span class="security-label">🔍 Run Security Scan</span>
+                      <button class="btn btn-primary">Start</button>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">➕ Add Cloud Account</span>
+                      <button class="btn btn-primary">Add</button>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">📊 Generate Report</span>
+                      <button class="btn btn-primary">Generate</button>
+                    </div>
+                    <div class="security-item">
+                      <span class="security-label">⚙️ Configure Rules</span>
+                      <button class="btn btn-secondary">Configure</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Other Page Content (Hidden by default) -->
+          <div id="other-content" style="display: none;">
+            <div class="dashboard-header">
+              <h1 class="page-title" id="page-title">Page Title</h1>
+              <p class="page-subtitle" id="page-subtitle">Page description will be shown here</p>
+            </div>
+            
+            <!-- Profile Page -->
+            <div id="profile-page" style="display: none;">
+              <div class="dashboard-grid">
+                <div class="dashboard-card profile-card">
+                  <div class="card-header">
+                    <h3 class="card-title">👤 User Profile</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="profile-info-section">
+                      <div class="profile-avatar">
+                        <div class="avatar-circle" id="profile-avatar">👤</div>
+                      </div>
+                      <div class="profile-details">
+                        <h2 id="profile-display-name">Loading...</h2>
+                        <p id="profile-display-email">Loading...</p>
+                        <span class="role-badge" id="profile-display-role">USER</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="dashboard-card">
+                  <div class="card-header">
+                    <h3 class="card-title">✏️ Edit Profile</h3>
+                  </div>
+                  <div class="card-content">
+                    <form id="profile-update-form">
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="profile-first-name">First Name</label>
+                          <input type="text" id="profile-first-name" name="firstName" placeholder="Enter your first name">
+                        </div>
+                        <div class="form-group">
+                          <label for="profile-last-name">Last Name</label>
+                          <input type="text" id="profile-last-name" name="lastName" placeholder="Enter your last name">
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="profile-email-input">Email Address</label>
+                        <input type="email" id="profile-email-input" name="email" placeholder="Enter your email">
+                      </div>
+                      
+                      <div class="form-group">
+                        <label for="profile-username-input">Username</label>
+                        <input type="text" id="profile-username-input" name="username" placeholder="Username" readonly>
+                      </div>
+                      
+                      <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                        <button type="button" class="btn btn-secondary" onclick="loadUserProfile()">Reset</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                
+                <div class="dashboard-card">
+                  <div class="card-header">
+                    <h3 class="card-title">📊 Account Statistics</h3>
+                  </div>
+                  <div class="card-content">
+                    <div class="stats-grid">
+                      <div class="stat-item">
+                        <div class="stat-value" id="account-created">Loading...</div>
+                        <div class="stat-label">Member Since</div>
+                      </div>
+                      <div class="stat-item">
+                        <div class="stat-value" id="last-login">Loading...</div>
+                        <div class="stat-label">Last Login</div>
+                      </div>
+                      <div class="stat-item">
+                        <div class="stat-value" id="account-status">Active</div>
+                        <div class="stat-label">Account Status</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Generic Page Content -->
+            <div id="generic-page-content">
+              <div class="dashboard-grid">
+                <div class="dashboard-card">
+                  <div class="card-header">
+                    <h3 class="card-title">Feature Coming Soon</h3>
+                  </div>
+                  <div class="card-content">
+                    <p>This feature is under development and will be available in the next release.</p>
+                    <br>
+                    <p><strong>Current Status:</strong> UI Layout Complete ✅</p>
+                    <p><strong>Backend Integration:</strong> In Progress 🔄</p>
+                    <p><strong>Expected Release:</strong> Next Sprint 📅</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   </div>
 
-  <!-- Signup Modal -->
-  <div class="modal" id="signupModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Sign Up for CouldSecureAI</h3>
-        <button class="close-btn" onclick="closeModal()">&times;</button>
+  <!-- Authentication Modal -->
+  <div class="auth-modal" id="auth-modal">
+    <div class="auth-modal-content">
+      <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+      
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="login-tab" onclick="switchAuthTab('login')">Login</div>
+        <div class="auth-tab" id="signup-tab" onclick="switchAuthTab('signup')">Sign Up</div>
       </div>
-      <div class="alert alert-danger" id="signupErrorMessage" style="display: none;"></div>
-      <form class="signup-form" onsubmit="handleSignup(event)">
-        <div class="form-group">
-          <label for="fullName">Full Name</label>
-          <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+
+      <!-- Login Form -->
+      <div class="auth-form" id="login-form">
+        <h3 style="margin-bottom: 20px; color: #2c3e50;">Welcome Back</h3>
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="login-username">Username or Email</label>
+            <input type="text" id="login-username" name="username" placeholder="Enter your username or email" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Login</button>
+        </form>
+        <div class="auth-footer">
+          <p>Don't have an account? <a href="#" onclick="switchAuthTab('signup')" style="color: #3498db; text-decoration: none;">Sign up here</a></p>
         </div>
-        <div class="form-group">
-          <label for="signupUsername">Username</label>
-          <input type="text" id="signupUsername" name="signupUsername" placeholder="Choose a username" required>
+      </div>
+
+      <!-- Signup Form -->
+      <div class="auth-form" id="signup-form" style="display: none;">
+        <h3 style="margin-bottom: 20px; color: #2c3e50;">Create Account</h3>
+        <form onsubmit="handleSignup(event)">
+          <div class="form-group">
+            <label for="signup-fullname">Full Name</label>
+            <input type="text" id="signup-fullname" name="fullname" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-username">Username</label>
+            <input type="text" id="signup-username" name="username" placeholder="Choose a username" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" name="email" placeholder="Enter your email address" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" name="password" placeholder="Create a password" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+        </form>
+        <div class="auth-footer">
+          <p>Already have an account? <a href="#" onclick="switchAuthTab('login')" style="color: #3498db; text-decoration: none;">Login here</a></p>
         </div>
-        <div class="form-group">
-          <label for="signupEmail">Email</label>
-          <input type="email" id="signupEmail" name="signupEmail" placeholder="Enter your email" required>
-        </div>
-        <div class="form-group">
-          <label for="signupPassword">Password</label>
-          <input type="password" id="signupPassword" name="signupPassword" placeholder="Create a password" required>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
-          <p class="form-link">
-            Already have an account? <a href="#" onclick="showLogin(); return false;">Login</a>
-          </p>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 
   <script>
-    function showLogin() {
-      document.getElementById('loginModal').classList.add('active');
-      document.getElementById('signupModal').classList.remove('active');
+    let isCollapsed = false;
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const toggleIcon = document.getElementById('toggle-icon');
+      
+      isCollapsed = !isCollapsed;
+      
+      if (isCollapsed) {
+        sidebar.classList.add('collapsed');
+        toggleIcon.textContent = '⦻';
+      } else {
+        sidebar.classList.remove('collapsed');
+        toggleIcon.textContent = '≡';
+      }
     }
 
-    function showSignup() {
-      document.getElementById('signupModal').classList.add('active');
-      document.getElementById('loginModal').classList.remove('active');
+    function showPage(pageName, updateUrl = true) {
+      // Update URL without page reload
+      if (updateUrl) {
+        const newUrl = pageName === 'dashboard' ? '/dashboard' : `/${pageName}`;
+        window.history.pushState({page: pageName}, '', newUrl);
+      }
+
+      // Update navigation active state
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => item.classList.remove('active'));
+      
+      // Find and activate the correct nav item
+      const targetNavItem = Array.from(navItems).find(item => 
+        item.getAttribute('data-page') === pageName
+      );
+      if (targetNavItem) {
+        targetNavItem.classList.add('active');
+      }
+
+      // Show/hide content
+      const dashboardContent = document.getElementById('dashboard-content');
+      const otherContent = document.getElementById('other-content');
+      const pageTitle = document.getElementById('page-title');
+      const pageSubtitle = document.getElementById('page-subtitle');
+
+      if (pageName === 'dashboard') {
+        dashboardContent.style.display = 'block';
+        otherContent.style.display = 'none';
+        loadDashboardData();
+      } else if (pageName === 'profile') {
+        dashboardContent.style.display = 'none';
+        otherContent.style.display = 'block';
+        document.getElementById('profile-page').style.display = 'block';
+        document.getElementById('generic-page-content').style.display = 'none';
+        loadUserProfile();
+        
+        pageTitle.textContent = 'User Profile';
+        pageSubtitle.textContent = 'Manage your account information and settings';
+      } else {
+        dashboardContent.style.display = 'none';
+        otherContent.style.display = 'block';
+        document.getElementById('profile-page').style.display = 'none';
+        document.getElementById('generic-page-content').style.display = 'block';
+        loadPageData(pageName);
+
+        // Update page title based on selected page
+        const pageTitles = {
+          'cloud-accounts': 'Cloud Account Management',
+          'resources': 'Resource Situation Analysis',
+          'compliance': 'Compliance Rules & Policies',
+          'vulnerabilities': 'Vulnerability Assessment',
+          'k8s-clusters': 'Kubernetes Cluster Management',
+          'container-images': 'Container Image Security',
+          'code-security': 'Source Code Security Analysis',
+          'reports': 'Security Reports & Analytics',
+          'settings': 'System Settings & Configuration'
+        };
+
+        const pageDescriptions = {
+          'cloud-accounts': 'Manage and monitor all your cloud provider accounts and their security configurations',
+          'resources': 'Analyze your cloud resources for security risks and compliance issues',
+          'compliance': 'Configure and manage compliance rules and security policies',
+          'vulnerabilities': 'Scan and assess vulnerabilities across your cloud infrastructure',
+          'k8s-clusters': 'Monitor and secure your Kubernetes clusters and workloads',
+          'container-images': 'Scan container images for vulnerabilities and compliance issues',
+          'code-security': 'Analyze source code repositories for security vulnerabilities',
+          'reports': 'Generate comprehensive security reports and analytics',
+          'settings': 'Configure system settings, users, and security preferences'
+        };
+
+        pageTitle.textContent = pageTitles[pageName] || 'Page Title';
+        pageSubtitle.textContent = pageDescriptions[pageName] || 'Page description';
+      }
     }
 
-    function closeModal() {
-      document.getElementById('loginModal').classList.remove('active');
-      document.getElementById('signupModal').classList.remove('active');
-      document.getElementById('errorMessage').style.display = 'none';
-      document.getElementById('signupErrorMessage').style.display = 'none';
+    function goDashboard() {
+      showPage('dashboard');
+      // Reset active nav item to dashboard
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => item.classList.remove('active'));
+      navItems[0].classList.add('active');
     }
 
-    function startTrial() {
-      showSignup();
+    function goToHome() {
+      // Always go back to the landing page when clicking the logo
+      document.getElementById('landing-page').style.display = 'block';
+      document.getElementById('authenticated-app').style.display = 'none';
+      
+      // Reset any active navigation items
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => item.classList.remove('active'));
+      
+      // Close any open modals
+      closeAuthModal();
+      
+      console.log('🏠 Navigated to home page');
+    }
+
+    // Authentication functions
+    function showAuthModal() {
+      document.getElementById('auth-modal').classList.add('active');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('auth-modal').classList.remove('active');
+    }
+
+    function switchAuthTab(tab) {
+      const loginTab = document.getElementById('login-tab');
+      const signupTab = document.getElementById('signup-tab');
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+
+      if (tab === 'login') {
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+      } else {
+        signupTab.classList.add('active');
+        loginTab.classList.remove('active');
+        signupForm.style.display = 'block';
+        loginForm.style.display = 'none';
+      }
+    }
+
+
+    function showDashboard() {
+      document.getElementById('landing-page').style.display = 'none';
+      document.getElementById('authenticated-app').style.display = 'flex';
     }
 
     function watchDemo() {
-      alert('Demo video coming soon! This is a working static version of the CouldSecureAI UI.');
-    }
-
-    function handleLogin(event) {
-      event.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      
-      // Demo login - in real app this would call the backend API
-      if (username && password) {
-        alert('Login successful! In the full Angular app, this would redirect to the dashboard.');
-        closeModal();
-      } else {
-        showError('Please enter both username and password.', 'errorMessage');
-      }
-    }
-
-    function handleSignup(event) {
-      event.preventDefault();
-      const fullName = document.getElementById('fullName').value;
-      const username = document.getElementById('signupUsername').value;
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      
-      // Demo signup - in real app this would call the backend API
-      if (fullName && username && email && password) {
-        alert('Signup successful! In the full Angular app, this would create an account and redirect to the dashboard.');
-        closeModal();
-      } else {
-        showError('Please fill in all fields.', 'signupErrorMessage');
-      }
-    }
-
-    function showError(message, elementId) {
-      const errorElement = document.getElementById(elementId);
-      errorElement.textContent = message;
-      errorElement.style.display = 'block';
+      alert('🎬 Demo Video\n\nWatch how CouldSecureAI protects your cloud infrastructure:\n\n• Multi-cloud security monitoring\n• AI-powered threat detection\n• Automated compliance reporting\n• Real-time vulnerability assessment\n\nDemo video coming soon!');
     }
 
     // Close modal when clicking outside
     window.addEventListener('click', function(event) {
-      const loginModal = document.getElementById('loginModal');
-      const signupModal = document.getElementById('signupModal');
-      if (event.target === loginModal || event.target === signupModal) {
-        closeModal();
+      const authModal = document.getElementById('auth-modal');
+      if (event.target === authModal) {
+        closeAuthModal();
       }
+    });
+
+    // Backend API Configuration
+    const API_BASE_URL = 'http://localhost:8080/api';
+    let authToken = localStorage.getItem('authToken');
+
+    // Backend API Functions
+    async function apiCall(endpoint, method = 'GET', data = null) {
+      const config = {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      };
+
+      if (authToken) {
+        config.headers['Authorization'] = `Bearer ${authToken}`;
+      }
+
+      if (data) {
+        config.body = JSON.stringify(data);
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+        
+        if (response.status === 401) {
+          // Token expired or invalid
+          localStorage.removeItem('authToken');
+          authToken = null;
+          goToHome();
+          return null;
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error('API call failed:', error);
+        return null;
+      }
+    }
+
+    // Load Dashboard Data from Backend
+    async function loadDashboardData() {
+      console.log('📊 Loading dashboard data from backend...');
+      
+      try {
+        const [metrics, activities, providers, compliance] = await Promise.all([
+          apiCall('/dashboard/metrics'),
+          apiCall('/dashboard/activities'),
+          apiCall('/dashboard/providers'),
+          apiCall('/dashboard/compliance')
+        ]);
+
+        if (metrics) {
+          updateDashboardMetrics(metrics);
+        }
+        if (activities) {
+          updateRecentActivities(activities);
+        }
+        if (providers) {
+          updateCloudProviders(providers);
+        }
+        if (compliance) {
+          updateComplianceStatus(compliance);
+        }
+      } catch (error) {
+        console.error('Failed to load dashboard data:', error);
+      }
+    }
+
+    // Load Page-Specific Data from Backend
+    async function loadPageData(pageName) {
+      console.log(`📄 Loading ${pageName} data from backend...`);
+      
+      const endpoints = {
+        'cloud-accounts': '/accounts',
+        'resources': '/resources',
+        'compliance': '/compliance/rules',
+        'vulnerabilities': '/vulnerabilities',
+        'k8s-clusters': '/k8s/clusters',
+        'container-images': '/containers/images',
+        'code-security': '/code/security',
+        'reports': '/reports',
+        'settings': '/settings'
+      };
+
+      const endpoint = endpoints[pageName];
+      if (endpoint) {
+        const data = await apiCall(endpoint);
+        if (data) {
+          updatePageContent(pageName, data);
+        }
+      }
+    }
+
+    // Update Dashboard UI with Backend Data
+    function updateDashboardMetrics(metrics) {
+      // Update metrics cards with real data
+      if (metrics.totalAccounts !== undefined) {
+        document.querySelector('.metric-card:nth-child(1) .metric-value').textContent = metrics.totalAccounts;
+      }
+      if (metrics.securityScore !== undefined) {
+        document.querySelector('.metric-card:nth-child(2) .metric-value').textContent = metrics.securityScore + '%';
+      }
+      if (metrics.totalScans !== undefined) {
+        document.querySelector('.metric-card:nth-child(3) .metric-value').textContent = metrics.totalScans;
+      }
+      if (metrics.criticalAlerts !== undefined) {
+        document.querySelector('.metric-card:nth-child(4) .metric-value').textContent = metrics.criticalAlerts;
+      }
+    }
+
+    function updateRecentActivities(activities) {
+      // Update recent activities list with real data
+      console.log('Updating recent activities:', activities);
+    }
+
+    function updateCloudProviders(providers) {
+      // Update cloud providers list with real data
+      console.log('Updating cloud providers:', providers);
+    }
+
+    function updateComplianceStatus(compliance) {
+      // Update compliance status with real data
+      console.log('Updating compliance status:', compliance);
+    }
+
+    function updatePageContent(pageName, data) {
+      // Update page-specific content with backend data
+      console.log(`Updating ${pageName} content:`, data);
+      
+      // Add loading indicator removal
+      const loadingIndicator = document.getElementById('loading-indicator');
+      if (loadingIndicator) {
+        loadingIndicator.style.display = 'none';
+      }
+    }
+
+    // Handle Browser Back/Forward Navigation
+    window.addEventListener('popstate', function(event) {
+      if (event.state && event.state.page) {
+        showPage(event.state.page, false);
+      } else {
+        // Handle direct URL access
+        const path = window.location.pathname;
+        if (path === '/' || path === '') {
+          goToHome();
+        } else {
+          const pageName = path.substring(1); // Remove leading slash
+          if (authToken) {
+            showDashboard();
+            showPage(pageName, false);
+          } else {
+            goToHome();
+          }
+        }
+      }
+    });
+
+    // Profile Management Functions
+    async function loadUserProfile() {
+      console.log('👤 Loading user profile...');
+      
+      try {
+        const response = await apiCall('/user/profile');
+        if (response) {
+          updateProfileDisplay(response);
+          updateProfileForm(response);
+        } else {
+          // Fallback to stored user data
+          const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+          updateProfileDisplay(storedUser);
+          updateProfileForm(storedUser);
+        }
+      } catch (error) {
+        console.error('Failed to load user profile:', error);
+        // Fallback to stored user data
+        const storedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        updateProfileDisplay(storedUser);
+        updateProfileForm(storedUser);
+      }
+    }
+
+    function updateProfileDisplay(userData) {
+      const displayName = (userData.firstName && userData.lastName) 
+        ? `${userData.firstName} ${userData.lastName}` 
+        : userData.username || 'User';
+      
+      document.getElementById('profile-display-name').textContent = displayName;
+      document.getElementById('profile-display-email').textContent = userData.email || 'No email';
+      document.getElementById('current-username').textContent = userData.email || userData.username || 'User';
+      
+      const roleBadge = document.getElementById('profile-display-role');
+      roleBadge.textContent = userData.role || 'USER';
+      roleBadge.className = `role-badge ${userData.role || 'USER'}`;
+      
+      // Update avatar with first letter of name
+      const avatarText = displayName.charAt(0).toUpperCase();
+      document.getElementById('profile-avatar').textContent = avatarText;
+      
+      // Update account stats
+      if (userData.createdAt) {
+        const createdDate = new Date(userData.createdAt);
+        document.getElementById('account-created').textContent = createdDate.toLocaleDateString();
+      } else {
+        document.getElementById('account-created').textContent = 'N/A';
+      }
+      
+      document.getElementById('last-login').textContent = 'Just now';
+      document.getElementById('account-status').textContent = 'Active';
+    }
+
+    function updateProfileForm(userData) {
+      document.getElementById('profile-first-name').value = userData.firstName || '';
+      document.getElementById('profile-last-name').value = userData.lastName || '';
+      document.getElementById('profile-email-input').value = userData.email || '';
+      document.getElementById('profile-username-input').value = userData.username || '';
+    }
+
+    async function updateUserProfile(event) {
+      event.preventDefault();
+      
+      const formData = {
+        firstName: document.getElementById('profile-first-name').value,
+        lastName: document.getElementById('profile-last-name').value,
+        email: document.getElementById('profile-email-input').value
+      };
+
+      console.log('📝 Updating user profile...', formData);
+
+      try {
+        const response = await apiCall('/user/profile', 'PUT', formData);
+        if (response) {
+          console.log('✅ Profile updated successfully');
+          
+          // Update stored user data
+          const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+          const updatedUser = { ...currentUser, ...response };
+          localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+          
+          // Refresh display
+          updateProfileDisplay(response);
+          alert('Profile updated successfully!');
+        } else {
+          alert('Failed to update profile. Please try again.');
+        }
+      } catch (error) {
+        console.error('Profile update error:', error);
+        alert('Failed to update profile. Please check your connection.');
+      }
+    }
+
+    // Enhanced Authentication Functions
+    async function handleLogin(event) {
+      event.preventDefault();
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+
+      console.log('🔐 Attempting login for:', username);
+      console.log('🌐 API URL:', `${API_BASE_URL}/auth/login`);
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            username: username, 
+            password: password 
+          })
+        });
+
+        console.log('📡 Response status:', response.status);
+        console.log('📡 Response headers:', response.headers);
+
+        const data = await response.json();
+        console.log('📄 Response data:', data);
+
+        if (response.ok && data.token) {
+          authToken = data.token;
+          localStorage.setItem('authToken', authToken);
+          localStorage.setItem('currentUser', JSON.stringify({
+            username: data.username,
+            email: data.email,
+            role: data.role
+          }));
+          console.log('✅ Login successful for:', username);
+          closeAuthModal();
+          showDashboard();
+        } else {
+          console.error('❌ Login failed:', data);
+          alert(data.message || 'Login failed. Please check your credentials.');
+        }
+      } catch (error) {
+        console.error('🚨 Login error:', error);
+        
+        // Fallback for development - simulate login if backend is not available
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+          console.log('⚠️  Backend not available, using fallback authentication');
+          if (username === 'admin' && password === 'admin') {
+            authToken = 'dev-token-' + Date.now();
+            localStorage.setItem('authToken', authToken);
+            localStorage.setItem('currentUser', JSON.stringify({
+              username: 'admin',
+              email: 'admin@cloudsecure.com',
+              role: 'ADMIN'
+            }));
+            console.log('✅ Fallback login successful for:', username);
+            closeAuthModal();
+            showDashboard();
+            return;
+          }
+        }
+        
+        alert('Login failed. Please check if the backend service is running on http://localhost:8080\n\nFor testing, you can use:\nUsername: admin\nPassword: admin');
+      }
+    }
+
+    async function handleSignup(event) {
+      event.preventDefault();
+      const fullname = document.getElementById('signup-fullname').value;
+      const username = document.getElementById('signup-username').value;
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+
+      console.log('📝 Attempting signup for:', username);
+      console.log('🌐 API URL:', `${API_BASE_URL}/auth/register`);
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            username: username,
+            email: email, 
+            password: password,
+            firstName: fullname.split(' ')[0] || '',
+            lastName: fullname.split(' ').slice(1).join(' ') || ''
+          })
+        });
+
+        console.log('📡 Response status:', response.status);
+        const data = await response.json();
+        console.log('📄 Response data:', data);
+
+        if (response.ok && data.token) {
+          authToken = data.token;
+          localStorage.setItem('authToken', authToken);
+          localStorage.setItem('currentUser', JSON.stringify({
+            username: data.username,
+            email: data.email,
+            role: data.role
+          }));
+          console.log('✅ Signup successful for:', username);
+          closeAuthModal();
+          showDashboard();
+        } else {
+          console.error('❌ Signup failed:', data);
+          alert(data.message || 'Signup failed. Please try again.');
+        }
+      } catch (error) {
+        console.error('🚨 Signup error:', error);
+        
+        // Fallback for development - simulate signup if backend is not available
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+          console.log('⚠️  Backend not available, using fallback authentication');
+          if (username && email && password) {
+            authToken = 'dev-token-' + Date.now();
+            localStorage.setItem('authToken', authToken);
+            localStorage.setItem('currentUser', JSON.stringify({
+              username: username,
+              email: email,
+              role: 'USER'
+            }));
+            console.log('✅ Fallback signup successful for:', username);
+            closeAuthModal();
+            showDashboard();
+            return;
+          }
+        }
+        
+        alert('Signup failed. Please check if the backend service is running on http://localhost:8080\n\nFor testing, you can use the login with:\nUsername: admin\nPassword: admin');
+      }
+    }
+
+    // Backend Connectivity Test
+    async function testBackendConnection() {
+      try {
+        console.log('🔍 Testing backend connectivity...');
+        const response = await fetch(`${API_BASE_URL}/auth/test`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        
+        if (response.ok) {
+          console.log('✅ Backend is accessible');
+          return true;
+        } else {
+          console.log('⚠️  Backend responded with status:', response.status);
+          return false;
+        }
+      } catch (error) {
+        console.log('❌ Backend is not accessible:', error.message);
+        return false;
+      }
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🚀 CouldSecureAI Enterprise Cloud Security Platform');
+      console.log('✅ Professional HummerRisk-inspired UI loaded successfully');
+      console.log('🛡️ Security Dashboard ready for enterprise use');
+      console.log('🔗 Backend API URL:', API_BASE_URL);
+      
+      // Test backend connectivity
+      testBackendConnection().then(isConnected => {
+        if (isConnected) {
+          console.log('🌐 Backend service is running and accessible');
+        } else {
+          console.log('⚠️  Backend service is not accessible - fallback authentication available');
+          console.log('   For testing: Username: admin, Password: admin');
+        }
+      });
+      
+      // Check if user is already authenticated
+      if (authToken) {
+        // Check token validity by trying to get user profile
+        apiCall('/user/profile').then(response => {
+          if (response && response.username) {
+            showDashboard();
+            // Update user display
+            updateProfileDisplay(response);
+            // Handle initial URL routing
+            const path = window.location.pathname;
+            if (path !== '/' && path !== '') {
+              const pageName = path.substring(1);
+              showPage(pageName, false);
+            } else {
+              showPage('dashboard', false);
+            }
+          } else {
+            localStorage.removeItem('authToken');
+            authToken = null;
+            goToHome();
+          }
+        });
+      } else {
+        // Show landing page by default
+        document.getElementById('landing-page').style.display = 'block';
+        document.getElementById('authenticated-app').style.display = 'none';
+      }
+      
+      // Add profile form event listener
+      document.getElementById('profile-update-form').addEventListener('submit', updateUserProfile);
     });
   </script>
 </body>
