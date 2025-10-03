@@ -1,0 +1,67 @@
+<div class="dashboard-container">
+  <!-- Navigation Header -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" routerLink="/home">CloudSecure AI</a>
+      <div class="navbar-nav ms-auto">
+        <span class="navbar-text me-3" *ngIf="currentUser">
+          Welcome, {{ currentUser.username }}!
+        </span>
+        <button class="btn btn-outline-light btn-sm me-2" *ngIf="isAdmin" (click)="goToAdmin()">Admin Panel</button>
+        <button class="btn btn-outline-light btn-sm" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>🎉 Welcome to Your Protected Dashboard!</h2>
+        <p class="lead">You have successfully authenticated and can now access protected content.</p>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">👤 User Profile</h5>
+            <p class="card-text">View and manage your profile information.</p>
+            <button class="btn btn-primary" (click)="loadUserProfile()">View Profile</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🔒 Protected API</h5>
+            <p class="card-text">Test access to protected API endpoints.</p>
+            <button class="btn btn-success" (click)="testProtectedAPI()">Test API</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3" *ngIf="isAdmin">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">⚙️ Admin Panel</h5>
+            <p class="card-text">Access administrative functions.</p>
+            <button class="btn btn-warning" (click)="goToAdmin()">Admin Panel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>API Response</h5>
+          </div>
+          <div class="card-body">
+            <pre class="bg-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">{{ apiResponse || 'Click on buttons above to see API responses...' }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

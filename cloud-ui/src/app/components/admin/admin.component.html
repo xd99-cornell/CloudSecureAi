@@ -1,0 +1,82 @@
+<div class="admin-container">
+  <!-- Navigation Header -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+    <div class="container">
+      <a class="navbar-brand" routerLink="/home">CloudSecure AI - Admin</a>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" routerLink="/dashboard">Dashboard</a>
+        <span class="navbar-text me-3" *ngIf="currentUser">
+          Admin: {{ currentUser.username }}
+        </span>
+        <button class="btn btn-outline-light btn-sm" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>⚙️ Admin Panel</h2>
+        <p class="lead">Administrative functions and system management.</p>
+        <div class="alert alert-warning" role="alert">
+          <strong>Warning:</strong> This is a protected admin area. Only administrators can access this page.
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">👥 User Management</h5>
+            <p class="card-text">Manage system users and their permissions.</p>
+            <button class="btn btn-primary" (click)="loadUsers()">Load Users</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">📊 System Stats</h5>
+            <p class="card-text">View system statistics and performance metrics.</p>
+            <button class="btn btn-info" (click)="loadSystemStats()">View Stats</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🔒 Security Settings</h5>
+            <p class="card-text">Configure security policies and settings.</p>
+            <button class="btn btn-warning" (click)="loadSecuritySettings()">Security</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">🔧 Admin API Test</h5>
+            <p class="card-text">Test admin-only API endpoints.</p>
+            <button class="btn btn-danger" (click)="testAdminAPI()">Test Admin API</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5>Admin Console Output</h5>
+          </div>
+          <div class="card-body">
+            <pre class="bg-dark text-light p-3 rounded" style="max-height: 400px; overflow-y: auto;">{{ adminConsole || 'Welcome to the Admin Console. Click on buttons above to perform administrative tasks...' }}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

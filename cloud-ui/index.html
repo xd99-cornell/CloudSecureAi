@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CouldSecureAI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="src/favicon.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1rem 0;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .brand-name {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+
+    .btn-outline:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5a6fd8;
+    }
+
+    .btn-large {
+      padding: 15px 30px;
+      font-size: 1.1rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      margin-top: 80px;
+      padding: 100px 0;
+      color: white;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+
+    .gradient-text {
+      background: linear-gradient(45deg, #fff, #f0f0f0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-description {
+      font-size: 1.3rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      margin-top: 50px;
+    }
+
+    .cloud-illustration {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+
+    .cloud, .shield-icon, .ai-icon {
+      position: absolute;
+      font-size: 3rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .cloud-1 { top: 20px; left: 100px; animation-delay: 0s; }
+    .cloud-2 { top: 50px; right: 100px; animation-delay: 1s; }
+    .cloud-3 { bottom: 20px; left: 50%; transform: translateX(-50%); animation-delay: 2s; }
+    .shield-icon { top: 50%; left: 45%; animation-delay: 0.5s; }
+    .ai-icon { top: 50%; right: 45%; animation-delay: 1.5s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Features Section */
+    .features {
+      background: white;
+      padding: 100px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: #333;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      padding: 2.5rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .feature-description {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      color: #666;
+    }
+
+    .feature-list {
+      list-style: none;
+    }
+
+    .feature-list li {
+      padding: 5px 0;
+      color: #555;
+    }
+
+    /* CTA Section */
+    .cta {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 100px 0;
+      text-align: center;
+      color: white;
+    }
+
+    .cta-title {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .cta-description {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 10px;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    .form-link {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .form-link a {
+      color: #667eea;
+      text-decoration: none;
+    }
+
+    .alert {
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    .alert-danger {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2.5rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .hero-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <nav class="navbar">
+      <div class="container">
+        <div class="nav-brand">
+          <div class="logo">🛡️</div>
+          <span class="brand-name">CouldSecureAI</span>
+        </div>
+        <div class="nav-actions">
+          <button class="btn btn-outline" onclick="showLogin()">Login</button>
+          <button class="btn btn-primary" onclick="showSignup()">Get Started</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Secure Your Cloud Infrastructure with 
+          <span class="gradient-text">AI-Powered Intelligence</span>
+        </h1>
+        <p class="hero-description">
+          CouldSecureAI provides comprehensive hybrid cloud management and advanced security protection 
+          powered by artificial intelligence. Protect your resources, optimize performance, and ensure 
+          compliance across all your cloud environments.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-large" onclick="startTrial()">Start Free Trial</button>
+          <button class="btn btn-outline btn-large" onclick="watchDemo()">Watch Demo</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="cloud-illustration">
+          <div class="cloud cloud-1">☁️</div>
+          <div class="cloud cloud-2">☁️</div>
+          <div class="cloud cloud-3">☁️</div>
+          <div class="shield-icon">🛡️</div>
+          <div class="ai-icon">🤖</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Powerful Features for Modern Cloud Security</h2>
+      
+      <div class="features-grid">
+        <!-- Feature 1: Hybrid Cloud Management -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <div class="icon-cloud">☁️</div>
+          </div>
+          <h3 class="feature-title">Hybrid Cloud Management with AI</h3>
+          <p class="feature-description">
+            Intelligently manage and orchestrate your hybrid cloud infrastructure across multiple 
+            providers. Our AI algorithms optimize resource allocation, predict scaling needs, 
+            and automate deployment processes for maximum efficiency.
+          </p>
+          <ul class="feature-list">
+            <li>✅ Multi-cloud orchestration</li>
+            <li>✅ AI-driven resource optimization</li>
+            <li>✅ Automated scaling and deployment</li>
+            <li>✅ Cost optimization insights</li>
+          </ul>
+        </div>
+
+        <!-- Feature 2: Cloud Resource Security -->
+        <div class="feature-card">
+          <div class="feature-icon">
+            <div class="icon-security">🔒</div>
+          </div>
+          <h3 class="feature-title">Cloud Resource Security Protection</h3>
+          <p class="feature-description">
+            Advanced security monitoring and threat detection powered by machine learning. 
+            Protect your cloud resources from vulnerabilities, unauthorized access, 
+            and emerging cyber threats with real-time intelligence.
+          </p>
+          <ul class="feature-list">
+            <li>✅ Real-time threat detection</li>
+            <li>✅ Vulnerability assessment</li>
+            <li>✅ Compliance monitoring</li>
+            <li>✅ Automated incident response</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Ready to Secure Your Cloud?</h2>
+        <p class="cta-description">
+          Join thousands of organizations that trust CouldSecureAI to protect their cloud infrastructure.
+        </p>
+        <button class="btn btn-primary btn-large" onclick="showLogin()">Get Started Today</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Login to CouldSecureAI</h3>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="alert alert-danger" id="errorMessage" style="display: none;"></div>
+      <form class="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-full">Login</button>
+          <p class="form-link">
+            Don't have an account? <a href="#" onclick="showSignup(); return false;">Sign up</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal" id="signupModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Sign Up for CouldSecureAI</h3>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="alert alert-danger" id="signupErrorMessage" style="display: none;"></div>
+      <form class="signup-form" onsubmit="handleSignup(event)">
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label for="signupUsername">Username</label>
+          <input type="text" id="signupUsername" name="signupUsername" placeholder="Choose a username" required>
+        </div>
+        <div class="form-group">
+          <label for="signupEmail">Email</label>
+          <input type="email" id="signupEmail" name="signupEmail" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" name="signupPassword" placeholder="Create a password" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
+          <p class="form-link">
+            Already have an account? <a href="#" onclick="showLogin(); return false;">Login</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function showLogin() {
+      document.getElementById('loginModal').classList.add('active');
+      document.getElementById('signupModal').classList.remove('active');
+    }
+
+    function showSignup() {
+      document.getElementById('signupModal').classList.add('active');
+      document.getElementById('loginModal').classList.remove('active');
+    }
+
+    function closeModal() {
+      document.getElementById('loginModal').classList.remove('active');
+      document.getElementById('signupModal').classList.remove('active');
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('signupErrorMessage').style.display = 'none';
+    }
+
+    function startTrial() {
+      showSignup();
+    }
+
+    function watchDemo() {
+      alert('Demo video coming soon! This is a working static version of the CouldSecureAI UI.');
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // Demo login - in real app this would call the backend API
+      if (username && password) {
+        alert('Login successful! In the full Angular app, this would redirect to the dashboard.');
+        closeModal();
+      } else {
+        showError('Please enter both username and password.', 'errorMessage');
+      }
+    }
+
+    function handleSignup(event) {
+      event.preventDefault();
+      const fullName = document.getElementById('fullName').value;
+      const username = document.getElementById('signupUsername').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      
+      // Demo signup - in real app this would call the backend API
+      if (fullName && username && email && password) {
+        alert('Signup successful! In the full Angular app, this would create an account and redirect to the dashboard.');
+        closeModal();
+      } else {
+        showError('Please fill in all fields.', 'signupErrorMessage');
+      }
+    }
+
+    function showError(message, elementId) {
+      const errorElement = document.getElementById(elementId);
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+    }
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+      const loginModal = document.getElementById('loginModal');
+      const signupModal = document.getElementById('signupModal');
+      if (event.target === loginModal || event.target === signupModal) {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
