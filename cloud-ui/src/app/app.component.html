@@ -107,7 +107,7 @@
   <!-- Header -->
   <header class="landing-header">
     <nav class="landing-navbar">
-      <div class="nav-brand">
+      <div class="nav-brand" (click)="goToHome()">
         <img src="assets/logo.svg" alt="CouldSecureAI Logo" class="logo">
         <span class="brand-name">CouldSecureAI</span>
       </div>
@@ -123,21 +123,181 @@
     <div class="container">
       <div class="hero-content">
         <h1 class="hero-title">
-          Enterprise Cloud Security Platform
-          <span class="gradient-text">Powered by AI</span>
+          Empowering Small & Mid-Size Businesses
+          <span class="gradient-text">With Smart Resource Management</span>
         </h1>
         <p class="hero-description">
-          CouldSecureAI provides comprehensive hybrid cloud management and advanced security protection 
-          powered by artificial intelligence. Protect your resources, optimize performance, and ensure 
-          compliance across all your cloud environments.
+          CouldSecureAI is a non-profit platform designed to help small and medium businesses 
+          efficiently manage their cloud resources, reduce costs, and enhance security. 
+          Get enterprise-level tools at no cost to grow your business sustainably.
         </p>
         <div class="hero-actions">
-          <button class="btn btn-primary btn-large" (click)="startTrial()">Start Free Trial</button>
-          <button class="btn btn-outline btn-large" (click)="watchDemo()">Watch Demo</button>
+          <button class="btn btn-primary btn-large" (click)="startTrial()">Get Started Free</button>
+          <button class="btn btn-outline btn-large" (click)="watchDemo()">Learn More</button>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Key Features Section -->
+  <section class="features">
+    <div class="container">
+      <div class="features-header">
+        <h2 class="features-title">Why Choose CouldSecureAI?</h2>
+        <p class="features-subtitle">Free, comprehensive resource management tools designed specifically for small and medium businesses</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="icon-shield"></i>
+          </div>
+          <h3 class="feature-title">Cost-Effective Security</h3>
+          <p class="feature-description">
+            Free security monitoring and threat detection for your business. 
+            Protect your data and systems without the enterprise price tag.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="icon-cloud"></i>
+          </div>
+          <h3 class="feature-title">Simple Cloud Management</h3>
+          <p class="feature-description">
+            Easy-to-use dashboard for managing all your cloud resources in one place. 
+            Perfect for small teams without dedicated IT staff.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="icon-compliance"></i>
+          </div>
+          <h3 class="feature-title">Business Compliance</h3>
+          <p class="feature-description">
+            Stay compliant with industry standards without expensive consultants. 
+            Automated reports and guidance for small business regulations.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="icon-analytics"></i>
+          </div>
+          <h3 class="feature-title">Smart Cost Optimization</h3>
+          <p class="feature-description">
+            AI-powered insights to reduce your cloud costs and optimize resource usage. 
+            Save money while improving your business efficiency.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="icon-vulnerability"></i>
+          </div>
+          <h3 class="feature-title">Resource Monitoring</h3>
+          <p class="feature-description">
+            Keep track of your cloud resources and usage patterns. 
+            Get alerts when you need to scale up or down based on your business needs.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="icon-kubernetes"></i>
+          </div>
+          <h3 class="feature-title">Growth Support</h3>
+          <p class="feature-description">
+            Scale your business infrastructure as you grow. 
+            From startup to mid-size business, we grow with you.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Free Forever</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">Non-Profit</div>
+          <div class="stat-label">Mission Driven</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">Open Source</div>
+          <div class="stat-label">Transparent & Trustworthy</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">Enterprise</div>
+          <div class="stat-label">Grade Security</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <div class="logo">⚡</div>
+            <span class="brand-name">CouldSecureAI</span>
+          </div>
+          <p class="footer-description">
+            Empowering small and medium businesses with free, comprehensive cloud resource management tools.
+          </p>
+        </div>
+        
+        <div class="footer-section">
+          <h4 class="footer-title">Product</h4>
+          <ul class="footer-links">
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Documentation</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4 class="footer-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Mission</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Support</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4 class="footer-title">Community</h4>
+          <ul class="footer-links">
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Community Forum</a></li>
+            <li><a href="#">Resources</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          <p>&copy; 2022-2025 CouldSecureAI. All rights reserved.</p>
+        </div>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 </div>
 
 <!-- Login Modal -->

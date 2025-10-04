@@ -6,6 +6,7 @@ com/cloudsecure/backend/security/AuthTokenFilter.class
 com/cloudsecure/backend/CloudSecureBackendApplication.class
 com/cloudsecure/backend/controller/AuthController.class
 com/cloudsecure/backend/repository/UserRepository.class
+com/cloudsecure/backend/controller/UserController$UserProfileUpdateRequest.class
 com/cloudsecure/backend/config/DataInitializer.class
 com/cloudsecure/backend/service/AuthService.class
 com/cloudsecure/backend/security/JwtUtils.class

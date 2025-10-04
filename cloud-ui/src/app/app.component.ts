@@ -159,6 +159,14 @@ export class AppComponent implements OnInit {
     }
   }
 
+  goToHome() {
+    if (this.isAuthenticated) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.router.navigate(['/']);
+    }
+  }
+
   goToProfile() {
     this.router.navigate(['/profile']);
   }
