@@ -1,0 +1,152 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1>🤖 Ask AI Anything</h1>
+        <p>Chat with an AI assistant trained in cloud and security best practices</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" (click)="showSuggestions = !showSuggestions">
+          <i class="icon-lightbulb"></i>
+          {{ showSuggestions ? 'Hide' : 'Show' }} Suggestions
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ai-chat-layout">
+    <!-- Chat Interface -->
+    <div class="chat-container">
+      <div class="chat-messages" #chatMessages>
+        <div class="message" *ngFor="let message of messages" [class]="'message-' + message.type">
+          <div class="message-avatar">
+            <i [class]="message.type === 'ai' ? 'icon-robot' : 'icon-user'"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-text">{{ message.content }}</div>
+            <div class="message-time">{{ message.timestamp | date:'short' }}</div>
+          </div>
+        </div>
+        
+        <!-- AI Typing Indicator -->
+        <div class="message message-ai" *ngIf="isAiTyping">
+          <div class="message-avatar">
+            <i class="icon-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Input -->
+      <div class="chat-input-container">
+        <div class="suggested-questions" *ngIf="showSuggestions">
+          <h4>Quick Questions:</h4>
+          <div class="question-buttons">
+            <button 
+              class="btn btn-sm btn-outline question-btn" 
+              *ngFor="let question of suggestedQuestions"
+              (click)="askSuggestedQuestion(question)"
+              [class]="'btn-' + question.category">
+              <i [class]="'icon-' + question.category"></i>
+              {{ question.title }}
+            </button>
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <input 
+            type="text" 
+            [(ngModel)]="currentMessage" 
+            (keyup.enter)="sendMessage()"
+            placeholder="Ask me anything about cloud security..."
+            class="chat-input">
+          <button 
+            class="btn btn-primary send-btn" 
+            (click)="sendMessage()"
+            [disabled]="!currentMessage.trim() || isAiTyping">
+            <i class="icon-send"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Smart Recommendations Sidebar -->
+    <div class="recommendations-sidebar">
+      <div class="sidebar-section">
+        <h3>🔍 Smart Recommendations</h3>
+        <p class="section-description">AI-powered security tips tailored to your setup</p>
+        
+        <div class="security-tips">
+          <div 
+            class="tip-card" 
+            *ngFor="let tip of securityTips"
+            [class]="getPriorityClass(tip.priority)">
+            <div class="tip-header">
+              <div class="tip-icon">{{ getCategoryIcon(tip.category) }}</div>
+              <div class="tip-title">
+                <h4>{{ tip.title }}</h4>
+                <span class="tip-category">{{ tip.category }}</span>
+              </div>
+              <div class="tip-priority" [class]="'priority-' + tip.priority">
+                {{ tip.priority }}
+              </div>
+            </div>
+            
+            <div class="tip-content">
+              <p>{{ tip.description }}</p>
+            </div>
+            
+            <div class="tip-actions">
+              <button 
+                class="btn btn-sm btn-outline explain-btn"
+                (click)="explainWithAI(tip)">
+                <i class="icon-info"></i>
+                Explain with AI
+              </button>
+              <button class="btn btn-sm btn-primary action-btn">
+                {{ tip.actionText }}
+              </button>
+            </div>
+            
+            <div class="tip-badge" *ngIf="tip.isNew">New</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Features Info -->
+      <div class="sidebar-section">
+        <h3>✨ AI Features</h3>
+        <div class="feature-list">
+          <div class="feature-item">
+            <i class="icon-chat"></i>
+            <div>
+              <strong>Chat Assistant</strong>
+              <p>Ask questions about cloud security and get instant answers</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i class="icon-lightbulb"></i>
+            <div>
+              <strong>Smart Explanations</strong>
+              <p>Click "Explain with AI" on any alert for plain-language guidance</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i class="icon-recommendation"></i>
+            <div>
+              <strong>Personalized Tips</strong>
+              <p>Get recommendations based on your cloud setup and security posture</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
