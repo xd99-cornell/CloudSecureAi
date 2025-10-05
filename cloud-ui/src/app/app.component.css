@@ -425,9 +425,34 @@
 
 .hero-description {
   font-size: 1.3rem;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
   opacity: 0.9;
   line-height: 1.6;
+}
+
+.hero-ads {
+  margin-bottom: 40px;
+  padding: 20px 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.ads-text {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #ffffff;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.ads-text strong {
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-actions {
@@ -1031,6 +1056,15 @@
     align-items: center;
   }
   
+  .hero-ads {
+    padding: 16px 20px;
+    margin-bottom: 32px;
+  }
+  
+  .ads-text {
+    font-size: 1rem;
+  }
+  
   .landing-navbar {
     padding: 0 16px;
   }
@@ -1057,3 +1091,19 @@
 .content-wrapper > * {
   animation: fadeIn 0.5s ease-out;
 }
+
+/* AI Chat Icons */
+.icon-robot::before { content: '🤖'; }
+.icon-user::before { content: '👤'; }
+.icon-send::before { content: '📤'; }
+.icon-lightbulb::before { content: '💡'; }
+.icon-chat::before { content: '💬'; }
+.icon-recommendation::before { content: '🎯'; }
+.icon-info::before { content: 'ℹ️'; }
+
+/* Reports Icons */
+.icon-download::before { content: '📥'; }
+.icon-chevron-up::before { content: '▲'; }
+.icon-chevron-down::before { content: '▼'; }
+.icon-scan::before { content: '🔍'; }
+.icon-view::before { content: '👁️'; }
