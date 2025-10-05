@@ -1,43 +1,243 @@
 <div class="page-container">
+  <!-- Page Header -->
   <div class="page-header">
-    <h1>Vulnerabilities</h1>
-    <p>Security vulnerability scanning and management</p>
+    <div class="header-content">
+      <div class="header-text">
+        <h1>🔍 Security Vulnerabilities</h1>
+        <p>Comprehensive vulnerability scanning and threat detection across all your cloud resources</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="refreshVulnerabilities()">
+          <i class="icon-refresh"></i>
+          Refresh
+        </button>
+        <button class="btn btn-primary" (click)="openScheduleModal()">
+          <i class="icon-calendar"></i>
+          Schedule Scan
+        </button>
+        <button class="btn btn-primary" (click)="runScanNow()" [disabled]="isScanning">
+          <i class="icon-scan"></i>
+          {{ isScanning ? 'Scanning...' : 'Run Scan Now' }}
+        </button>
+      </div>
+    </div>
   </div>
-  
-  <div class="content-grid">
-    <div class="card">
-      <div class="card-header">
-        <h3>Critical Vulnerabilities</h3>
-        <span class="count critical">3</span>
+
+  <!-- Security & Compliance Score Dashboard -->
+  <div class="security-dashboard">
+    <div class="score-overview">
+      <div class="main-score" [class]="getScoreClass(securityScore)">
+        <div class="score-circle">
+          <div class="score-number">{{ securityScore }}%</div>
+          <div class="score-label">Security Score</div>
+        </div>
+        <div class="score-status">
+          <div class="status-icon">{{ getScoreIcon(securityScore) }}</div>
+          <div class="status-text">{{ getScoreStatus(securityScore) }}</div>
+        </div>
       </div>
-      <div class="card-content">
-        <p>CVE-2023-1234: SQL Injection</p>
-        <p>CVE-2023-5678: XSS Vulnerability</p>
-        <p>CVE-2023-9012: Buffer Overflow</p>
+      
+      <div class="score-summary">
+        <div class="summary-card passed">
+          <div class="card-icon">✅</div>
+          <div class="card-content">
+            <div class="card-number">{{ passedChecks }}</div>
+            <div class="card-label">Passed Checks</div>
+          </div>
+        </div>
+        
+        <div class="summary-card warnings">
+          <div class="card-icon">⚠️</div>
+          <div class="card-content">
+            <div class="card-number">{{ warningIssues }}</div>
+            <div class="card-label">Warnings</div>
+          </div>
+        </div>
+        
+        <div class="summary-card critical">
+          <div class="card-icon">❌</div>
+          <div class="card-content">
+            <div class="card-number">{{ criticalIssues }}</div>
+            <div class="card-label">Critical Issues</div>
+          </div>
+        </div>
       </div>
     </div>
     
-    <div class="card">
-      <div class="card-header">
-        <h3>High Severity</h3>
-        <span class="count high">7</span>
+    <div class="scan-controls">
+      <div class="scan-info">
+        <div class="last-scan">
+          <i class="icon-time"></i>
+          <span>Last Scan: {{ lastScanTime || 'Never' }}</span>
+        </div>
+        <div class="next-scan" *ngIf="nextScanTime">
+          <i class="icon-calendar"></i>
+          <span>Next Scan: {{ nextScanTime }}</span>
+        </div>
       </div>
-      <div class="card-content">
-        <p>Authentication Bypass: 2</p>
-        <p>Privilege Escalation: 3</p>
-        <p>Information Disclosure: 2</p>
+      
+      <div class="scan-progress" *ngIf="isScanning">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="scanProgress"></div>
+        </div>
+        <div class="progress-text">Scanning {{ scannedResources }} resources...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actionable Findings & Fix Suggestions -->
+  <div class="findings-section">
+    <div class="section-header">
+      <h2>🔍 Security Findings</h2>
+      <div class="filters">
+        <select [(ngModel)]="selectedSeverity" (change)="filterFindings()">
+          <option value="">All Severities</option>
+          <option value="critical">Critical</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        
+        <select [(ngModel)]="selectedProvider" (change)="filterFindings()">
+          <option value="">All Providers</option>
+          <option value="AWS">AWS</option>
+          <option value="Azure">Azure</option>
+          <option value="GCP">GCP</option>
+          <option value="DigitalOcean">DigitalOcean</option>
+        </select>
+        
+        <input type="text" [(ngModel)]="searchTerm" (input)="filterFindings()" placeholder="Search vulnerabilities...">
       </div>
     </div>
     
-    <div class="card">
-      <div class="card-header">
-        <h3>Medium Severity</h3>
-        <span class="count medium">15</span>
+    <div class="findings-table">
+      <div class="finding-row" *ngFor="let finding of filteredFindings" [class]="'severity-' + finding.severity.toLowerCase()">
+        <div class="finding-icon">
+          <span [class]="'severity-icon ' + finding.severity.toLowerCase()">
+            {{ getSeverityIcon(finding.severity) }}
+          </span>
+        </div>
+        
+        <div class="finding-details">
+          <div class="finding-title">{{ finding.title }}</div>
+          <div class="finding-description">{{ finding.description }}</div>
+          <div class="finding-meta">
+            <span class="provider">{{ finding.provider }}</span>
+            <span class="resource">{{ finding.resourceType }}</span>
+            <span class="region">{{ finding.region }}</span>
+          </div>
+        </div>
+        
+        <div class="finding-severity">
+          <span class="severity-badge" [class]="finding.severity.toLowerCase()">
+            {{ finding.severity }}
+          </span>
+        </div>
+        
+        <div class="finding-actions">
+          <button class="btn btn-sm btn-outline" (click)="viewRemediation(finding)">
+            <i class="icon-info"></i>
+            View Steps
+          </button>
+          <button class="btn btn-sm btn-primary" (click)="fixNow(finding)">
+            <i class="icon-fix"></i>
+            Fix Now
+          </button>
+        </div>
       </div>
-      <div class="card-content">
-        <p>Configuration Issues: 8</p>
-        <p>Weak Encryption: 4</p>
-        <p>Logging Issues: 3</p>
+    </div>
+    
+    <div class="no-findings" *ngIf="filteredFindings.length === 0">
+      <div class="no-findings-icon">🎉</div>
+      <h3>No vulnerabilities found!</h3>
+      <p>Your cloud resources are secure. Keep up the good work!</p>
+    </div>
+  </div>
+
+  <!-- Schedule Scan Modal -->
+  <div class="modal-overlay" *ngIf="showScheduleModal" (click)="closeScheduleModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Schedule Vulnerability Scan</h3>
+        <button class="close-btn" (click)="closeScheduleModal()">
+          <i class="icon-close"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Scan Frequency</label>
+          <select [(ngModel)]="scanFrequency">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label>Scan Time</label>
+          <input type="time" [(ngModel)]="scanTime">
+        </div>
+        
+        <div class="form-group">
+          <label>Target Resources</label>
+          <div class="checkbox-group">
+            <label *ngFor="let resource of availableResources">
+              <input type="checkbox" [value]="resource" [(ngModel)]="selectedResources">
+              <span>{{ resource }}</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="pauseScans">
+            <span>Pause scans during maintenance periods</span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeScheduleModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveSchedule()">
+          <i class="icon-calendar"></i>
+          Schedule Scan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remediation Steps Modal -->
+  <div class="modal-overlay" *ngIf="showRemediationModal" (click)="closeRemediationModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Fix: {{ selectedFinding?.title }}</h3>
+        <button class="close-btn" (click)="closeRemediationModal()">
+          <i class="icon-close"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="remediation-steps">
+          <div class="step" *ngFor="let step of selectedFinding?.remediationSteps; let i = index">
+            <div class="step-number">{{ i + 1 }}</div>
+            <div class="step-content">
+              <h4>{{ step.title }}</h4>
+              <p>{{ step.description }}</p>
+              <div class="step-commands" *ngIf="step.commands">
+                <code>{{ step.commands }}</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeRemediationModal()">Close</button>
+        <button class="btn btn-primary" (click)="markAsFixed(selectedFinding)">
+          <i class="icon-check"></i>
+          Mark as Fixed
+        </button>
       </div>
     </div>
   </div>
