@@ -1,0 +1,348 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1>🧭 Resource Situation</h1>
+        <p>Unified view of all resources across AWS, Azure, GCP, DigitalOcean, and more</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" (click)="refreshResources()">
+          <i class="icon-refresh"></i>
+          Sync All
+        </button>
+        <button class="btn btn-primary" (click)="openDiscoveryModal()">
+          <i class="icon-search"></i>
+          Discover Resources
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters and Controls -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>🔍 Filter by Provider:</label>
+      <select [(ngModel)]="selectedProvider" (change)="applyFilters()">
+        <option value="">All Providers</option>
+        <option value="AWS">AWS</option>
+        <option value="Azure">Azure</option>
+        <option value="GCP">GCP</option>
+        <option value="DigitalOcean">DigitalOcean</option>
+        <option value="Linode">Linode</option>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label>🗺️ Filter by Environment:</label>
+      <select [(ngModel)]="selectedEnvironment" (change)="applyFilters()">
+        <option value="">All Environments</option>
+        <option value="production">Production</option>
+        <option value="staging">Staging</option>
+        <option value="development">Development</option>
+        <option value="testing">Testing</option>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label>📍 Filter by Region:</label>
+      <select [(ngModel)]="selectedRegion" (change)="applyFilters()">
+        <option value="">All Regions</option>
+        <option value="us-east-1">US East 1</option>
+        <option value="us-west-2">US West 2</option>
+        <option value="eu-west-1">EU West 1</option>
+        <option value="ap-southeast-1">AP Southeast 1</option>
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label>🏷️ Filter by Project:</label>
+      <select [(ngModel)]="selectedProject" (change)="applyFilters()">
+        <option value="">All Projects</option>
+        <option value="web-app">Web Application</option>
+        <option value="data-analytics">Data Analytics</option>
+        <option value="ml-pipeline">ML Pipeline</option>
+        <option value="infrastructure">Infrastructure</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Overview Stats -->
+  <div class="overview-stats">
+    <div class="stat-card total">
+      <div class="stat-icon">
+        <i class="icon-cloud"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{ totalResources }}</div>
+        <div class="stat-label">Total Resources</div>
+      </div>
+    </div>
+    
+    <div class="stat-card running">
+      <div class="stat-icon">
+        <i class="icon-check"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{ runningResources }}</div>
+        <div class="stat-label">Running</div>
+      </div>
+    </div>
+    
+    <div class="stat-card stopped">
+      <div class="stat-icon">
+        <i class="icon-warning"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{ stoppedResources }}</div>
+        <div class="stat-label">Stopped</div>
+      </div>
+    </div>
+    
+    <div class="stat-card cost">
+      <div class="stat-icon">
+        <i class="icon-dollar"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">${{ totalCost | number:'1.2-2' }}</div>
+        <div class="stat-label">Monthly Cost</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resource Grid -->
+  <div class="resources-grid">
+    <div class="resource-card" *ngFor="let resource of filteredResources" [class]="getResourceStatusClass(resource.status)">
+      <div class="resource-header">
+        <div class="resource-icon" [class]="'provider-' + resource.provider.toLowerCase()">
+          <i [class]="'icon-' + resource.provider.toLowerCase()"></i>
+        </div>
+        <div class="resource-info">
+          <h3>{{ resource.name }}</h3>
+          <p class="resource-type">{{ resource.type }}</p>
+          <p class="resource-id">{{ resource.id }}</p>
+        </div>
+        <div class="resource-status">
+          <span class="status-badge" [class]="resource.status.toLowerCase()">{{ resource.status }}</span>
+          <div class="health-indicator" [class]="resource.health.toLowerCase()"></div>
+        </div>
+      </div>
+      
+      <div class="resource-details">
+        <div class="detail-row">
+          <span class="label">Provider:</span>
+          <span class="value">{{ resource.provider }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Region:</span>
+          <span class="value">{{ resource.region }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Environment:</span>
+          <span class="value">{{ resource.environment }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Project:</span>
+          <span class="value">{{ resource.project }}</span>
+        </div>
+        <div class="detail-row" *ngIf="resource.cost">
+          <span class="label">Cost:</span>
+          <span class="value cost">${{ resource.cost | number:'1.2-2' }}/month</span>
+        </div>
+      </div>
+      
+      <div class="resource-tags" *ngIf="resource.tags && resource.tags.length > 0">
+        <span class="tag" *ngFor="let tag of resource.tags">{{ tag }}</span>
+      </div>
+      
+      <div class="resource-metrics" *ngIf="resource.metrics">
+        <div class="metric">
+          <span class="metric-label">CPU:</span>
+          <div class="metric-bar">
+            <div class="metric-fill" [style.width.%]="resource.metrics.cpu"></div>
+          </div>
+          <span class="metric-value">{{ resource.metrics.cpu }}%</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Memory:</span>
+          <div class="metric-bar">
+            <div class="metric-fill" [style.width.%]="resource.metrics.memory"></div>
+          </div>
+          <span class="metric-value">{{ resource.metrics.memory }}%</span>
+        </div>
+      </div>
+      
+      <div class="resource-actions">
+        <button class="btn btn-sm btn-outline" (click)="viewResourceDetails(resource)">
+          <i class="icon-eye"></i>
+          View
+        </button>
+        <button class="btn btn-sm btn-outline" (click)="manageResource(resource)">
+          <i class="icon-settings"></i>
+          Manage
+        </button>
+        <button class="btn btn-sm btn-outline" (click)="viewLogs(resource)">
+          <i class="icon-file"></i>
+          Logs
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Resources State -->
+  <div class="empty-state" *ngIf="filteredResources.length === 0">
+    <div class="empty-icon">
+      <i class="icon-cloud"></i>
+    </div>
+    <h3>No Resources Found</h3>
+    <p>No resources match your current filters. Try adjusting your search criteria.</p>
+    <button class="btn btn-primary" (click)="clearFilters()">
+      <i class="icon-refresh"></i>
+      Clear Filters
+    </button>
+  </div>
+
+  <!-- Security & Access Control Panel -->
+  <div class="security-panel" *ngIf="showSecurityPanel">
+    <div class="panel-header">
+      <h3>🔒 Security & Access Control</h3>
+      <button class="close-btn" (click)="toggleSecurityPanel()">
+        <i class="icon-close"></i>
+      </button>
+    </div>
+    <div class="panel-content">
+      <div class="security-section">
+        <h4>Central IAM Management</h4>
+        <div class="iam-grid">
+          <div class="iam-card">
+            <h5>AWS IAM</h5>
+            <p>Users: {{ iamStats.aws.users }}</p>
+            <p>Roles: {{ iamStats.aws.roles }}</p>
+            <p>Policies: {{ iamStats.aws.policies }}</p>
+          </div>
+          <div class="iam-card">
+            <h5>Azure AD</h5>
+            <p>Users: {{ iamStats.azure.users }}</p>
+            <p>Groups: {{ iamStats.azure.groups }}</p>
+            <p>Applications: {{ iamStats.azure.applications }}</p>
+          </div>
+          <div class="iam-card">
+            <h5>GCP IAM</h5>
+            <p>Users: {{ iamStats.gcp.users }}</p>
+            <p>Service Accounts: {{ iamStats.gcp.serviceAccounts }}</p>
+            <p>Custom Roles: {{ iamStats.gcp.customRoles }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monitoring & Alerts Panel -->
+  <div class="monitoring-panel" *ngIf="showMonitoringPanel">
+    <div class="panel-header">
+      <h3>📈 Monitoring & Alerts</h3>
+      <button class="close-btn" (click)="toggleMonitoringPanel()">
+        <i class="icon-close"></i>
+      </button>
+    </div>
+    <div class="panel-content">
+      <div class="monitoring-section">
+        <h4>Health Metrics</h4>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <h5>CPU Usage</h5>
+            <div class="metric-chart">
+              <div class="chart-bar" [style.width.%]="healthMetrics.cpu"></div>
+            </div>
+            <span class="metric-value">{{ healthMetrics.cpu }}%</span>
+          </div>
+          <div class="metric-card">
+            <h5>Memory Usage</h5>
+            <div class="metric-chart">
+              <div class="chart-bar" [style.width.%]="healthMetrics.memory"></div>
+            </div>
+            <span class="metric-value">{{ healthMetrics.memory }}%</span>
+          </div>
+          <div class="metric-card">
+            <h5>Disk Usage</h5>
+            <div class="metric-chart">
+              <div class="chart-bar" [style.width.%]="healthMetrics.disk"></div>
+            </div>
+            <span class="metric-value">{{ healthMetrics.disk }}%</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="alerts-section">
+        <h4>Active Alerts</h4>
+        <div class="alerts-list">
+          <div class="alert-item" *ngFor="let alert of activeAlerts" [class]="'alert-' + alert.severity">
+            <div class="alert-icon">
+              <i [class]="'icon-' + alert.type"></i>
+            </div>
+            <div class="alert-content">
+              <h5>{{ alert.title }}</h5>
+              <p>{{ alert.description }}</p>
+              <span class="alert-time">{{ alert.timestamp | date:'short' }}</span>
+            </div>
+            <div class="alert-actions">
+              <button class="btn btn-sm" (click)="acknowledgeAlert(alert)">Acknowledge</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Timeline -->
+  <div class="timeline-panel" *ngIf="showTimelinePanel">
+    <div class="panel-header">
+      <h3>🕒 Event Timeline</h3>
+      <button class="close-btn" (click)="toggleTimelinePanel()">
+        <i class="icon-close"></i>
+      </button>
+    </div>
+    <div class="panel-content">
+      <div class="timeline">
+        <div class="timeline-item" *ngFor="let event of timelineEvents" [class]="'timeline-' + event.type">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <h5>{{ event.title }}</h5>
+            <p>{{ event.description }}</p>
+            <span class="timeline-time">{{ event.timestamp | date:'medium' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Log Viewer -->
+  <div class="log-viewer" *ngIf="showLogViewer">
+    <div class="viewer-header">
+      <h3>🧭 Log Viewer</h3>
+      <div class="viewer-controls">
+        <select [(ngModel)]="selectedLogLevel">
+          <option value="">All Levels</option>
+          <option value="error">Error</option>
+          <option value="warning">Warning</option>
+          <option value="info">Info</option>
+          <option value="debug">Debug</option>
+        </select>
+        <button class="btn btn-sm" (click)="refreshLogs()">
+          <i class="icon-refresh"></i>
+          Refresh
+        </button>
+        <button class="close-btn" (click)="toggleLogViewer()">
+          <i class="icon-close"></i>
+        </button>
+      </div>
+    </div>
+    <div class="log-content">
+      <div class="log-entry" *ngFor="let log of filteredLogs" [class]="'log-' + log.level">
+        <span class="log-time">{{ log.timestamp | date:'HH:mm:ss' }}</span>
+        <span class="log-level">{{ log.level.toUpperCase() }}</span>
+        <span class="log-message">{{ log.message }}</span>
+      </div>
+    </div>
+  </div>
+</div>

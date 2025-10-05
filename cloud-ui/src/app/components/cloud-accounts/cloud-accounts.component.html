@@ -1,0 +1,310 @@
+<div class="page-container">
+    <div class="page-header">
+      <div class="header-content">
+        <div class="header-text">
+          <h1>Cloud Accounts Overview</h1>
+          <p>Multi-cloud inventory view - manage all your cloud resources in one dashboard</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-primary" (click)="openAddAccountModal()">
+            <i class="icon-plus"></i>
+            Add Account
+          </button>
+          <button class="btn btn-outline" (click)="refreshAccounts()">
+            <i class="icon-refresh"></i>
+            Refresh
+          </button>
+        </div>
+      </div>
+    </div>
+
+  <!-- Multi-Cloud Inventory Dashboard -->
+  <div class="inventory-dashboard" *ngIf="inventoryData">
+    <!-- Overview Stats -->
+    <div class="section-title">
+      <h3>Overview Statistics</h3>
+    </div>
+    <div class="dashboard-stats">
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <i class="icon-cloud"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ inventoryData.totalResources }}</div>
+          <div class="stat-label">Total Resources</div>
+        </div>
+      </div>
+      
+      <div class="stat-card cost">
+        <div class="stat-icon">
+          <i class="icon-dollar"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">${{ inventoryData.totalMonthlyCost | number:'1.2-2' }}</div>
+          <div class="stat-label">Monthly Cost</div>
+        </div>
+      </div>
+      
+      <div class="stat-card running">
+        <div class="stat-icon">
+          <i class="icon-check"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ inventoryData.runningResources }}</div>
+          <div class="stat-label">Running</div>
+        </div>
+      </div>
+      
+      <div class="stat-card stopped">
+        <div class="stat-icon">
+          <i class="icon-warning"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number">{{ inventoryData.stoppedResources }}</div>
+          <div class="stat-label">Stopped</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="stats-overview">
+    <div class="stat-card">
+      <div class="stat-icon connected">
+        <i class="icon-check"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{ connectedAccounts }}</div>
+        <div class="stat-label">Connected</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon warning">
+        <i class="icon-warning"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{ warningAccounts }}</div>
+        <div class="stat-label">Warnings</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon critical">
+        <i class="icon-alert"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{ criticalAccounts }}</div>
+        <div class="stat-label">Critical</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon total">
+        <i class="icon-cloud"></i>
+      </div>
+      <div class="stat-content">
+        <div class="stat-number">{{ totalAccounts }}</div>
+        <div class="stat-label">Total Accounts</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Cloud Accounts Grid -->
+  <div class="accounts-grid" *ngIf="cloudAccounts.length > 0; else noAccounts">
+    <div class="account-card" *ngFor="let account of cloudAccounts" [class]="getCardClass(account)">
+      <div class="card-header">
+        <div class="account-info">
+          <div class="provider-icon" [class]="'provider-' + account.provider.toLowerCase()">
+            <i [class]="'icon-' + account.provider.toLowerCase()"></i>
+          </div>
+          <div class="account-details">
+            <h3>{{ account.accountName }}</h3>
+            <p class="account-id">{{ account.accountId }}</p>
+          </div>
+        </div>
+        <div class="account-status">
+          <span class="status" [class]="account.status.toLowerCase()">{{ account.status }}</span>
+          <span class="health" [class]="account.healthStatus.toLowerCase()">{{ account.healthStatus }}</span>
+        </div>
+      </div>
+      
+      <div class="card-content">
+        <div class="account-meta">
+          <div class="meta-item">
+            <i class="icon-location"></i>
+            <span>{{ account.region }}</span>
+          </div>
+          <div class="meta-item" *ngIf="account.lastSync">
+            <i class="icon-time"></i>
+            <span>{{ formatLastSync(account.lastSync) }}</span>
+          </div>
+          <div class="meta-item" *ngIf="account.notificationCount > 0">
+            <i class="icon-notification"></i>
+            <span>{{ account.notificationCount }} notifications</span>
+          </div>
+        </div>
+        
+        <div class="account-description" *ngIf="account.description">
+          <p>{{ account.description }}</p>
+        </div>
+        
+        <div class="account-error" *ngIf="account.lastError">
+          <i class="icon-error"></i>
+          <span>{{ account.lastError }}</span>
+        </div>
+      </div>
+      
+      <div class="card-actions">
+        <button class="btn btn-sm btn-outline" (click)="syncAccount(account.id)">
+          <i class="icon-sync"></i>
+          Sync
+        </button>
+        <button class="btn btn-sm btn-outline" (click)="editAccount(account)">
+          <i class="icon-edit"></i>
+          Edit
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="deleteAccount(account.id)">
+          <i class="icon-delete"></i>
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Accounts State -->
+  <ng-template #noAccounts>
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="icon-cloud"></i>
+      </div>
+      <h3>No Cloud Accounts</h3>
+      <p>Get started by adding your first cloud account</p>
+      <button class="btn btn-primary" (click)="openAddAccountModal()">
+        <i class="icon-plus"></i>
+        Add Your First Account
+      </button>
+    </div>
+  </ng-template>
+
+  <!-- Resources by Provider -->
+  <div class="dashboard-section" *ngIf="inventoryData">
+    <div class="section-title">
+      <h3>Resources by Provider</h3>
+      <p>Distribution of resources and costs across cloud providers</p>
+    </div>
+    <div class="provider-breakdown">
+      <div class="provider-card" *ngFor="let provider of getProviderBreakdown()">
+        <div class="provider-header">
+          <div class="provider-icon" [class]="'provider-' + provider.name.toLowerCase()">
+            <i [class]="'icon-' + provider.name.toLowerCase()"></i>
+          </div>
+          <div class="provider-info">
+            <h4>{{ provider.name }}</h4>
+            <p>{{ provider.count }} resources</p>
+          </div>
+          <div class="provider-cost">
+            <span class="cost-amount">${{ provider.cost | number:'1.2-2' }}</span>
+            <span class="cost-label">/month</span>
+          </div>
+        </div>
+        <div class="provider-bar">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getProviderPercentage(provider.count)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Expensive Resources -->
+  <div class="dashboard-section" *ngIf="inventoryData">
+    <div class="section-title">
+      <h3>Top Expensive Resources</h3>
+      <p>Resources with the highest monthly costs requiring attention</p>
+    </div>
+    <div class="expensive-resources">
+      <div class="resource-item expensive" *ngFor="let resource of inventoryData.topExpensiveResources">
+        <div class="resource-icon" [class]="'provider-' + resource.provider.toLowerCase()">
+          <i [class]="'icon-' + resource.provider.toLowerCase()"></i>
+        </div>
+        <div class="resource-info">
+          <div class="resource-name">{{ resource.resourceName }}</div>
+          <div class="resource-details">
+            <span class="resource-type">{{ resource.resourceType }}</span>
+            <span class="resource-region">{{ resource.region }}</span>
+            <span class="resource-status" [class]="resource.status.toLowerCase()">{{ resource.status }}</span>
+          </div>
+        </div>
+        <div class="resource-cost expensive">
+          <span class="cost-amount">${{ resource.monthlyCost | number:'1.2-2' }}</span>
+          <span class="cost-period">/month</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Add/Edit Account Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>{{ isEditing ? 'Edit Account' : 'Add New Account' }}</h3>
+      <button class="close-btn" (click)="closeModal()">
+        <i class="icon-close"></i>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <form [formGroup]="accountForm" (ngSubmit)="saveAccount()">
+        <div class="form-group">
+          <label for="accountName">Account Name</label>
+          <input type="text" id="accountName" formControlName="accountName" placeholder="e.g., Production AWS">
+        </div>
+        
+        <div class="form-group">
+          <label for="provider">Cloud Provider</label>
+          <select id="provider" formControlName="provider">
+            <option value="">Select Provider</option>
+            <option value="AWS">Amazon Web Services</option>
+            <option value="Azure">Microsoft Azure</option>
+            <option value="GCP">Google Cloud Platform</option>
+            <option value="DigitalOcean">DigitalOcean</option>
+            <option value="Linode">Linode</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="accountId">Account ID</label>
+          <input type="text" id="accountId" formControlName="accountId" placeholder="e.g., 123456789012">
+        </div>
+        
+        <div class="form-group">
+          <label for="region">Region</label>
+          <input type="text" id="region" formControlName="region" placeholder="e.g., us-west-2">
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" formControlName="description" placeholder="Optional description..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="accessKey">Access Key</label>
+          <input type="password" id="accessKey" formControlName="accessKey" placeholder="Enter access key">
+        </div>
+        
+        <div class="form-group">
+          <label for="secretKey">Secret Key</label>
+          <input type="password" id="secretKey" formControlName="secretKey" placeholder="Enter secret key">
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-outline" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" [disabled]="accountForm.invalid">
+            {{ isEditing ? 'Update Account' : 'Add Account' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
