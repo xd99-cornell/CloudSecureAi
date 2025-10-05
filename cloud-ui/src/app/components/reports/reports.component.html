@@ -1,45 +1,207 @@
 <div class="page-container">
+  <!-- Page Header -->
   <div class="page-header">
-    <h1>Reports</h1>
-    <p>Generate and view security and compliance reports</p>
+    <div class="header-content">
+      <div class="header-text">
+        <h1>📊 Security Reports</h1>
+        <p>Comprehensive security overview across all your cloud environments</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" (click)="refreshData()">
+          <i class="icon-refresh"></i>
+          Refresh Data
+        </button>
+        <button class="btn btn-primary" (click)="exportReport()">
+          <i class="icon-download"></i>
+          Export Report
+        </button>
+      </div>
+    </div>
   </div>
-  
-  <div class="content-grid">
-    <div class="card">
-      <div class="card-header">
-        <h3>Security Reports</h3>
-        <span class="count">8</span>
-      </div>
-      <div class="card-content">
-        <p>Vulnerability Report - Last 30 days</p>
-        <p>Compliance Report - SOC 2</p>
-        <p>Risk Assessment - Q3 2023</p>
-        <p>Security Audit - Monthly</p>
-      </div>
-    </div>
-    
-    <div class="card">
-      <div class="card-header">
-        <h3>Compliance Reports</h3>
-        <span class="count">5</span>
-      </div>
-      <div class="card-content">
-        <p>GDPR Compliance - Quarterly</p>
-        <p>HIPAA Assessment - Annual</p>
-        <p>PCI DSS Report - Monthly</p>
-        <p>ISO 27001 - Bi-annual</p>
+
+  <!-- Summary Cards -->
+  <div class="summary-section">
+    <h2 class="section-title">📈 Security Overview</h2>
+    <div class="summary-cards">
+      <div 
+        class="summary-card" 
+        *ngFor="let card of summaryCards"
+        [class]="getColorClass(card.color)">
+        <div class="card-header">
+          <div class="card-icon">{{ card.icon }}</div>
+          <div class="card-trend" [class]="getTrendClass(card.trend)">
+            <span class="trend-icon">{{ getTrendIcon(card.trend) }}</span>
+            <span class="trend-value">{{ card.trendValue }}</span>
+          </div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">{{ card.title }}</h3>
+          <div class="card-value">{{ card.value }}</div>
+          <div class="card-subtitle">{{ card.subtitle }}</div>
+        </div>
       </div>
     </div>
-    
-    <div class="card">
-      <div class="card-header">
-        <h3>Cost Reports</h3>
-        <span class="count">3</span>
+  </div>
+
+  <!-- Visual Charts Section -->
+  <div class="charts-section">
+    <h2 class="section-title">📊 Security Health Overview</h2>
+    <div class="charts-grid">
+      <!-- Resource Security Pie Chart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>Resource Security Status</h3>
+          <p>Distribution of secure vs at-risk resources</p>
+        </div>
+        <div class="chart-content">
+          <div class="pie-chart">
+            <div class="chart-legend">
+              <div class="legend-item" *ngFor="let item of resourceData">
+                <div class="legend-color" [style.background-color]="item.color"></div>
+                <span class="legend-label">{{ item.status }}</span>
+                <span class="legend-value">{{ item.count }}</span>
+              </div>
+            </div>
+            <div class="chart-visual">
+            <div class="pie-chart-simple" [style.background]="getPieChartBackground()">
+              <div class="pie-segment secure">
+                <span class="segment-value">{{ resourceData[0].count }}</span>
+              </div>
+              <div class="pie-segment at-risk">
+                <span class="segment-value">{{ resourceData[1].count }}</span>
+              </div>
+            </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card-content">
-        <p>Cloud Cost Analysis - Monthly</p>
-        <p>Resource Utilization - Weekly</p>
-        <p>Budget Forecast - Quarterly</p>
+
+      <!-- Vulnerabilities Bar Chart -->
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>Vulnerabilities by Severity</h3>
+          <p>Current vulnerability distribution</p>
+        </div>
+        <div class="chart-content">
+          <div class="bar-chart">
+            <div class="bar-chart-bars">
+              <div 
+                class="bar-item" 
+                *ngFor="let item of vulnerabilityData"
+                [style.--height]="getBarHeight(item)">
+                <div class="bar" [style.background-color]="item.color">
+                  <span class="bar-value">{{ item.count }}</span>
+                </div>
+                <div class="bar-label">{{ item.severity }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Multi-Cloud Summary Table -->
+  <div class="table-section">
+    <h2 class="section-title">☁️ Multi-Cloud Summary</h2>
+    <div class="table-container">
+      <div class="table-header">
+        <div class="table-title">Cloud Provider Status</div>
+        <div class="table-actions">
+          <button class="btn btn-sm btn-outline" (click)="refreshData()">
+            <i class="icon-refresh"></i>
+            Refresh
+          </button>
+        </div>
+      </div>
+      
+      <div class="table-content">
+        <div class="table-row header">
+          <div class="col-provider">Cloud</div>
+          <div class="col-accounts">Accounts</div>
+          <div class="col-issues">Issues</div>
+          <div class="col-compliance">Compliance</div>
+          <div class="col-scan">Last Scan</div>
+          <div class="col-status">Status</div>
+          <div class="col-actions">Actions</div>
+        </div>
+        
+        <div 
+          class="table-row provider-row" 
+          *ngFor="let provider of cloudProviders"
+          [class.expanded]="provider.expanded">
+          <div class="col-provider">
+            <div class="provider-info">
+              <span class="provider-icon">{{ provider.icon }}</span>
+              <span class="provider-name">{{ provider.name }}</span>
+            </div>
+          </div>
+          <div class="col-accounts">{{ provider.accounts }}</div>
+          <div class="col-issues">
+            <span class="issues-count" [class]="provider.issues > 0 ? 'has-issues' : 'no-issues'">
+              {{ provider.issues }}
+            </span>
+          </div>
+          <div class="col-compliance">
+            <div class="compliance-score">
+              <span class="score-value">{{ provider.compliance }}%</span>
+              <div class="score-bar">
+                <div class="score-fill" [style.width.%]="provider.compliance"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-scan">{{ provider.lastScan }}</div>
+          <div class="col-status">
+            <span class="status-badge" [class]="getStatusClass(provider.status)">
+              {{ getStatusIcon(provider.status) }} {{ provider.status | titlecase }}
+            </span>
+          </div>
+          <div class="col-actions">
+            <button 
+              class="btn btn-sm btn-outline expand-btn"
+              (click)="toggleProviderExpansion(provider)">
+              <i class="icon-chevron" [class]="provider.expanded ? 'icon-chevron-up' : 'icon-chevron-down'"></i>
+              {{ provider.expanded ? 'Collapse' : 'Details' }}
+            </button>
+          </div>
+          
+          <!-- Expanded Details -->
+          <div class="provider-details" *ngIf="provider.expanded">
+            <div class="details-grid">
+              <div class="detail-item">
+                <div class="detail-label">Resources</div>
+                <div class="detail-value">{{ provider.details.resources }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Vulnerabilities</div>
+                <div class="detail-value">{{ provider.details.vulnerabilities }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Monthly Cost</div>
+                <div class="detail-value">${{ provider.details.cost | number:'1.2-2' }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Regions</div>
+                <div class="detail-value">{{ provider.details.region }}</div>
+              </div>
+            </div>
+            <div class="detail-actions">
+              <button class="btn btn-sm btn-outline">
+                <i class="icon-scan"></i>
+                Run Scan
+              </button>
+              <button class="btn btn-sm btn-outline">
+                <i class="icon-settings"></i>
+                Configure
+              </button>
+              <button class="btn btn-sm btn-primary">
+                <i class="icon-view"></i>
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
