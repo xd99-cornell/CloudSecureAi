@@ -1,0 +1,254 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1>🔍 Compliance Rules</h1>
+        <p>Automated compliance checks and risk assessment across all cloud providers</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" (click)="runComplianceScan()">
+          <i class="icon-refresh"></i>
+          Run Scan
+        </button>
+        <button class="btn btn-primary" (click)="scheduleScan()">
+          <i class="icon-calendar"></i>
+          Schedule Scan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compliance Score Overview -->
+  <div class="compliance-overview">
+    <div class="score-card">
+      <div class="score-circle" [class]="getScoreClass(overallScore)">
+        <div class="score-number">{{ overallScore }}</div>
+        <div class="score-label">Overall Score</div>
+      </div>
+      <div class="score-details">
+        <h3>Compliance Status</h3>
+        <p>{{ getComplianceStatus(overallScore) }}</p>
+        <div class="risk-level" [class]="getRiskLevelClass(overallScore)">
+          Risk Level: {{ getRiskLevel(overallScore) }}
+        </div>
+      </div>
+    </div>
+    
+    <div class="framework-scores">
+      <div class="framework-score" *ngFor="let framework of frameworkScores">
+        <div class="framework-name">{{ framework.name }}</div>
+        <div class="framework-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" [class]="getScoreClass(framework.score)" [style.width.%]="framework.score"></div>
+          </div>
+          <span class="score-text">{{ framework.score }}%</span>
+        </div>
+        <div class="framework-status" [class]="getScoreClass(framework.score)">
+          {{ getComplianceStatus(framework.score) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk Category Breakdown -->
+  <div class="risk-dashboard">
+    <h2>📊 Risk Category Breakdown</h2>
+    <div class="risk-categories">
+      <div class="risk-category" *ngFor="let category of riskCategories">
+        <div class="category-header">
+          <h3>{{ category.name }}</h3>
+          <div class="category-score" [class]="getScoreClass(category.score)">
+            {{ category.score }}%
+          </div>
+        </div>
+        <div class="category-details">
+          <div class="risk-items">
+            <div class="risk-item" *ngFor="let item of category.items" [class]="getRiskItemClass(item.status)">
+              <div class="risk-icon">
+                <i [class]="getRiskIcon(item.status)"></i>
+              </div>
+              <div class="risk-content">
+                <h4>{{ item.title }}</h4>
+                <p>{{ item.description }}</p>
+                <div class="risk-status">{{ item.status }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Automated Compliance Checks -->
+  <div class="compliance-checks">
+    <div class="section-header">
+      <h2>🔍 Automated Compliance Checks</h2>
+      <div class="scan-controls">
+        <select [(ngModel)]="selectedFramework" (change)="filterByFramework()">
+          <option value="">All Frameworks</option>
+          <option value="GDPR">GDPR</option>
+          <option value="SOC2">SOC 2</option>
+          <option value="ISO27001">ISO 27001</option>
+          <option value="HIPAA">HIPAA</option>
+          <option value="CIS">CIS Benchmarks</option>
+        </select>
+        <select [(ngModel)]="selectedProvider" (change)="filterByProvider()">
+          <option value="">All Providers</option>
+          <option value="AWS">AWS</option>
+          <option value="Azure">Azure</option>
+          <option value="GCP">GCP</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="checks-grid">
+      <div class="check-card" *ngFor="let check of filteredChecks" [class]="getCheckStatusClass(check.status)">
+        <div class="check-header">
+          <div class="check-icon" [class]="getCheckStatusClass(check.status)">
+            <i [class]="getCheckIcon(check.status)"></i>
+          </div>
+          <div class="check-info">
+            <h3>{{ check.title }}</h3>
+            <p class="check-framework">{{ check.framework }} • {{ check.provider }}</p>
+            <p class="check-description">{{ check.description }}</p>
+          </div>
+          <div class="check-status" [class]="getCheckStatusClass(check.status)">
+            {{ check.status }}
+          </div>
+        </div>
+        
+        <div class="check-details">
+          <div class="check-metrics">
+            <div class="metric">
+              <span class="metric-label">Last Scan:</span>
+              <span class="metric-value">{{ check.lastScan | date:'short' }}</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Next Scan:</span>
+              <span class="metric-value">{{ check.nextScan | date:'short' }}</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Resources:</span>
+              <span class="metric-value">{{ check.resourceCount }}</span>
+            </div>
+          </div>
+          
+          <div class="check-actions">
+            <button class="btn btn-sm btn-outline" (click)="viewCheckDetails(check)">
+              <i class="icon-eye"></i>
+              Details
+            </button>
+            <button class="btn btn-sm btn-outline" (click)="runSingleCheck(check)">
+              <i class="icon-play"></i>
+              Run Now
+            </button>
+            <button class="btn btn-sm btn-outline" (click)="getAIRecommendation(check)">
+              <i class="icon-ai"></i>
+              AI Help
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Compliance Trends -->
+  <div class="compliance-trends">
+    <h2>📈 Compliance Trends</h2>
+    <div class="trends-chart">
+      <div class="chart-container">
+        <div class="trend-line" *ngFor="let trend of complianceTrends">
+          <div class="trend-label">{{ trend.framework }}</div>
+          <div class="trend-progress">
+            <div class="trend-bar">
+              <div class="trend-fill" [style.width.%]="trend.currentScore"></div>
+            </div>
+            <span class="trend-score">{{ trend.currentScore }}%</span>
+          </div>
+          <div class="trend-change" [class]="trend.change > 0 ? 'positive' : 'negative'">
+            <i [class]="trend.change > 0 ? 'icon-arrow-up' : 'icon-arrow-down'"></i>
+            {{ Math.abs(trend.change) }}%
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI-Assisted Compliance Guidance -->
+  <div class="ai-guidance" *ngIf="showAIGuidance">
+    <div class="guidance-header">
+      <h2>💬 AI-Assisted Compliance Guidance</h2>
+      <button class="close-btn" (click)="toggleAIGuidance()">
+        <i class="icon-close"></i>
+      </button>
+    </div>
+    <div class="guidance-content">
+      <div class="ai-recommendations">
+        <div class="recommendation" *ngFor="let recommendation of aiRecommendations">
+          <div class="recommendation-header">
+            <div class="recommendation-icon">
+              <i class="icon-ai"></i>
+            </div>
+            <div class="recommendation-title">
+              <h4>{{ recommendation.title }}</h4>
+              <p class="recommendation-framework">{{ recommendation.framework }} • {{ recommendation.severity }}</p>
+            </div>
+          </div>
+          <div class="recommendation-content">
+            <p class="recommendation-description">{{ recommendation.description }}</p>
+            <div class="recommendation-actions">
+              <button class="btn btn-sm btn-primary" (click)="implementRecommendation(recommendation)">
+                <i class="icon-check"></i>
+                Implement
+              </button>
+              <button class="btn btn-sm btn-outline" (click)="learnMore(recommendation)">
+                <i class="icon-info"></i>
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scan Schedule Modal -->
+  <div class="modal-overlay" *ngIf="showScheduleModal" (click)="closeScheduleModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Schedule Compliance Scan</h3>
+        <button class="close-btn" (click)="closeScheduleModal()">
+          <i class="icon-close"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Scan Frequency:</label>
+          <select [(ngModel)]="scanFrequency">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Scan Time:</label>
+          <input type="time" [(ngModel)]="scanTime">
+        </div>
+        <div class="form-group">
+          <label>Frameworks to Scan:</label>
+          <div class="checkbox-group">
+            <label *ngFor="let framework of availableFrameworks">
+              <input type="checkbox" [value]="framework" [(ngModel)]="selectedFrameworks">
+              {{ framework }}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" (click)="closeScheduleModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveSchedule()">Schedule Scan</button>
+      </div>
+    </div>
+  </div>
+</div>
