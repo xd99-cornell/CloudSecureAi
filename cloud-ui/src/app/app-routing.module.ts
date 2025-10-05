@@ -6,9 +6,7 @@ import { CloudAccountsComponent } from './components/cloud-accounts/cloud-accoun
 import { ResourcesComponent } from './components/resources/resources.component';
 import { ComplianceComponent } from './components/compliance/compliance.component';
 import { VulnerabilitiesComponent } from './components/vulnerabilities/vulnerabilities.component';
-import { K8sClustersComponent } from './components/k8s-clusters/k8s-clusters.component';
-import { ContainerImagesComponent } from './components/container-images/container-images.component';
-import { CodeSecurityComponent } from './components/code-security/code-security.component';
+import { AiChatComponent } from './components/ai-chat/ai-chat.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { ProfileComponent } from './components/profile/profile.component';
 
@@ -20,9 +18,7 @@ const routes: Routes = [
   { path: 'resources', component: ResourcesComponent },
   { path: 'compliance', component: ComplianceComponent },
   { path: 'vulnerabilities', component: VulnerabilitiesComponent },
-  { path: 'k8s-clusters', component: K8sClustersComponent },
-  { path: 'container-images', component: ContainerImagesComponent },
-  { path: 'code-security', component: CodeSecurityComponent },
+  { path: 'ai-chat', component: AiChatComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'settings', component: AdminComponent },
   { path: 'profile', component: ProfileComponent }
